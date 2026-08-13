@@ -1,0 +1,35 @@
+## .NET
+backend/**/bin/
+backend/**/obj/
+backend/**/logs/
+*.user
+*.suo
+.vs/
+
+## Flutter
+mobile/.dart_tool/
+mobile/.idea/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/.pub-cache/
+mobile/.pub/
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/ios/Flutter/Flutter.podspec
+mobile/ios/Flutter/ephemeral/
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/app/debug
+mobile/android/app/profile
+mobile/android/app/release
+mobile/*.iml
+
+## Environment
+.env
+*.log
+
+## OS
+.DS_Store
+Thumbs.db
