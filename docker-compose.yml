@@ -29,7 +29,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=${POSTGRES_DB:-fintrack_db};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=${POSTGRES_DB:-fintrack_db};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres};Timeout=5
       Jwt__Secret: ${JWT_SECRET:-replace-with-a-secure-secret-that-is-long-enough-123456}
       Jwt__Issuer: ${JWT_ISSUER:-FinTrack}
       Jwt__Audience: ${JWT_AUDIENCE:-FinTrackMobile}
