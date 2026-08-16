@@ -13,6 +13,7 @@ import 'package:fintrack/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:fintrack/features/reports/presentation/reports_screen.dart';
 import 'package:fintrack/features/settings/presentation/more_screens.dart';
 import 'package:fintrack/features/transactions/presentation/transactions_screens.dart';
+import 'package:fintrack/routing/startup_redirect.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = _RouterRefresh(ref);
@@ -23,34 +24,13 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: refresh,
     redirect: (context, state) {
       final auth = ref.read(authControllerProvider);
-      final loc = state.matchedLocation;
       final onboarding = ref.read(sharedPreferencesProvider).getBool(StorageKeys.onboardingComplete) ?? false;
-
-      if (auth.isLoading) {
-        return null;
-      }
-
-      if (auth.hasError) {
-        final onboarding = ref.read(sharedPreferencesProvider).getBool(StorageKeys.onboardingComplete) ?? false;
-        if (!onboarding) {
-          return loc == '/onboarding' ? null : '/onboarding';
-        }
-        return loc == '/login' || loc == '/register' ? null : '/login';
-      }
-
-      final loggedIn = auth.valueOrNull?.isAuthenticated == true;
-      final public = {'/splash', '/onboarding', '/login', '/register'};
-
-      if (!onboarding && loc != '/onboarding') {
-        return '/onboarding';
-      }
-      if (onboarding && !loggedIn && !public.contains(loc)) {
-        return '/login';
-      }
-      if (loggedIn && public.contains(loc)) {
-        return '/home';
-      }
-      return null;
+      return resolveStartupRedirect(
+        location: state.matchedLocation,
+        authLoading: auth.isLoading,
+        loggedIn: auth.valueOrNull?.isAuthenticated == true,
+        onboardingComplete: onboarding,
+      );
     },
     routes: [
       GoRoute(path: '/splash', builder: (context, state) => const SplashScreen()),
@@ -90,7 +70,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
 class _RouterRefresh extends ChangeNotifier {
   _RouterRefresh(Ref ref) {
-          _sub = ref.listen(authControllerProvider, (_, _) => notifyListeners());
+    _sub = ref.listen(authControllerProvider, (_, _) => notifyListeners());
   }
 
   late final ProviderSubscription<AsyncValue<AuthSession>> _sub;
