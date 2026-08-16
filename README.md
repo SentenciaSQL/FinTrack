@@ -66,12 +66,12 @@ FinTrack is a portfolio-ready full-stack product, not a CRUD sample.
 
 ## Screenshots
 
-| Login | Dashboard | Transactions |
-| --- | --- | --- |
+| Login                           | Dashboard                               | Transactions                                  |
+| ------------------------------- | --------------------------------------- | --------------------------------------------- |
 | ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) | ![Transactions](screenshots/transactions.png) |
 
-| Budgets | Reports | Settings (ES) | Settings (EN) |
-| --- | --- | --- | --- |
+| Budgets                             | Reports                             | Settings (ES)                                         | Settings (EN)                                         |
+| ----------------------------------- | ----------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
 | ![Budgets](screenshots/budgets.png) | ![Reports](screenshots/reports.png) | ![Settings Spanish](screenshots/settings-spanish.png) | ![Settings English](screenshots/settings-english.png) |
 
 ## Tech Stack
@@ -170,11 +170,11 @@ Wait until both containers are up:
 docker compose ps
 ```
 
-| Service | URL |
-| --- | --- |
-| API | http://localhost:8080 |
+| Service | URL                           |
+| ------- | ----------------------------- |
+| API     | http://localhost:8080         |
 | Swagger | http://localhost:8080/swagger |
-| Health | http://localhost:8080/health |
+| Health  | http://localhost:8080/health  |
 
 The API applies EF Core migrations on startup. It does **not** recreate the database.
 
@@ -272,14 +272,28 @@ flutter pub get
 flutter run
 ```
 
+## App login
+
+Register first, then use those same values to log in.
+
+Example:
+
+```
+Name:     Andres
+Email:    andres@fintrack.dev
+Password: Password1
+```
+
+Password must be at least 8 characters.
+
 API base URL is centralized in `lib/core/constants/app_config.dart`:
 
-| Environment | URL |
-| --- | --- |
-| Android emulator | `http://10.0.2.2:8080/api` (default) |
-| iOS simulator | `http://localhost:8080/api` |
-| Physical device | `http://IP_LOCAL_PC:8080/api` via `--dart-define=API_BASE_URL=...` |
-| Staging / production | `--dart-define=FLAVOR=staging` or `production` |
+| Environment          | URL                                                                |
+| -------------------- | ------------------------------------------------------------------ |
+| Android emulator     | `http://10.0.2.2:8080/api` (default)                               |
+| iOS simulator        | `http://localhost:8080/api`                                        |
+| Physical device      | `http://IP_LOCAL_PC:8080/api` via `--dart-define=API_BASE_URL=...` |
+| Staging / production | `--dart-define=FLAVOR=staging` or `production`                     |
 
 Physical device example:
 
