@@ -77,6 +77,7 @@ try
     {
         var db = scope.ServiceProvider.GetRequiredService<FinTrackDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
+        logger.LogInformation("Waiting for PostgreSQL and applying migrations...");
         for (var attempt = 1; attempt <= 10; attempt++)
         {
             try
@@ -87,7 +88,10 @@ try
             }
             catch (Exception ex) when (attempt < 10)
             {
-                logger.LogWarning(ex, "Database not ready, retry {Attempt}/10", attempt);
+                logger.LogWarning(
+                    "PostgreSQL is not ready ({Message}). Retry {Attempt}/10 in 3s...",
+                    ex.Message,
+                    attempt);
                 await Task.Delay(TimeSpan.FromSeconds(3));
             }
         }
@@ -107,6 +111,21 @@ try
     app.UseAuthorization();
     app.MapControllers();
     app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+    app.Lifetime.ApplicationStarted.Register(() =>
+    {
+        var urls = app.Urls.Count > 0
+            ? app.Urls.ToArray()
+            : ["http://localhost:8080"];
+
+        foreach (var url in urls)
+        {
+            Log.Information("Now listening on {Url}", url);
+        }
+
+        Log.Information("FinTrack API is ready. Swagger: {Swagger}", $"{urls[0].TrimEnd('/')}/swagger");
+        Log.Information("Press Ctrl+C to shut down");
+    });
 
     app.Run();
 }
