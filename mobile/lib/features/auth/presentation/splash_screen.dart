@@ -38,6 +38,12 @@ class SplashScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(context.l10n.splashTagline, style: context.texts.titleMedium?.copyWith(color: Colors.white70)),
+            const SizedBox(height: 32),
+            const SizedBox(
+              width: 28,
+              height: 28,
+              child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white70),
+            ),
           ],
         ),
       ),
