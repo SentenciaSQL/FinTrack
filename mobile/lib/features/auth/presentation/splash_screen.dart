@@ -21,23 +21,29 @@ class SplashScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(28),
-              child: Image.asset(
-                'assets/branding/app_icon.png',
-                width: 112,
-                height: 112,
-              ),
-            )
+                  borderRadius: BorderRadius.circular(28),
+                  child: Image.asset(
+                    'assets/branding/app_icon.png',
+                    width: 112,
+                    height: 112,
+                  ),
+                )
                 .animate()
                 .fadeIn(duration: 500.ms)
                 .scale(begin: const Offset(0.86, 0.86)),
             const SizedBox(height: 20),
             Text(
               context.l10n.appName,
-              style: context.texts.headlineLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w800),
+              style: context.texts.headlineLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 8),
-            Text(context.l10n.splashTagline, style: context.texts.titleMedium?.copyWith(color: Colors.white70)),
+            Text(
+              context.l10n.splashTagline,
+              style: context.texts.titleMedium?.copyWith(color: Colors.white70),
+            ),
           ],
         ),
       ),

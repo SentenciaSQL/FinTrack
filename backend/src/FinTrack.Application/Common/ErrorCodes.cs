@@ -7,6 +7,8 @@ public static class ErrorCodes
     public const string InvalidEmail = "INVALID_EMAIL";
     public const string InvalidPassword = "INVALID_PASSWORD";
     public const string EmailAlreadyExists = "EMAIL_ALREADY_EXISTS";
+    public const string EmailNotVerified = "EMAIL_NOT_VERIFIED";
+    public const string InvalidVerificationToken = "INVALID_VERIFICATION_TOKEN";
     public const string InvalidCredentials = "INVALID_CREDENTIALS";
     public const string ResourceNotFound = "RESOURCE_NOT_FOUND";
     public const string Forbidden = "FORBIDDEN";
