@@ -288,17 +288,19 @@ Password must be at least 8 characters.
 
 API base URL is centralized in `lib/core/constants/app_config.dart`:
 
-| Environment          | URL                                                                |
-| -------------------- | ------------------------------------------------------------------ |
-| Android emulator     | `http://10.0.2.2:8080/api` (default)                               |
-| iOS simulator        | `http://localhost:8080/api`                                        |
-| Physical device      | `http://IP_LOCAL_PC:8080/api` via `--dart-define=API_BASE_URL=...` |
-| Staging / production | `--dart-define=FLAVOR=staging` or `production`                     |
+| Environment          | URL                                                                                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Android emulator     | `http://10.0.2.2:8080/api` (default)                                                                                                                                           |
+| iOS simulator        | `http://localhost:8080/api`                                                                                                                                                    |
+| Physical device      | `http://IP_LOCAL_PC:8080/api` via `--dart-define=API_BASE_URL=...`                                                                                                             |
+| Staging / production | `--dart-define=FLAVOR=staging` or `production` or `flutter run --dart-define=FLAVOR=production --dart-define=API_BASE_URL=https://fintrack-production-3807.up.railway.app/api` |
 
 Physical device example:
 
 ```bash
 flutter run --dart-define=API_BASE_URL=http://192.168.1.20:8080/api
+flutter build appbundle --release --dart-define=FLAVOR=production --dart-define=API_BASE_URL=https://fintrack-production-3807.up.railway.app/api
+flutter build ipa --release --dart-define=FLAVOR=production --dart-define=API_BASE_URL=https://fintrack-production-3807.up.railway.app/api
 ```
 
 After a first install, open **Register**, create an account, then log in. In Development, Settings includes **Load demo data**.
