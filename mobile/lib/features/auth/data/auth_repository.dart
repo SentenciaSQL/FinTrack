@@ -7,6 +7,7 @@ import 'package:fintrack/core/models/models.dart';
 import 'package:fintrack/core/network/dio_provider.dart';
 import 'package:fintrack/core/storage/secure_storage.dart';
 import 'package:fintrack/core/theme/theme_provider.dart';
+import 'package:fintrack/features/auth/data/biometric_auth.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(ref);
@@ -122,13 +123,9 @@ class AuthRepository {
 
 class AuthSession {
   const AuthSession({this.token, this.user});
-
   final String? token;
   final UserProfile? user;
-
-  bool get isAuthenticated {
-    return token != null && token!.isNotEmpty && user != null;
-  }
+  bool get isAuthenticated => token != null && token!.isNotEmpty;
 }
 
 final authControllerProvider =
@@ -173,26 +170,24 @@ class AuthController extends AsyncNotifier<AuthSession> {
 
   Future<void> login(String email, String password) async {
     state = const AsyncLoading();
-
     state = await AsyncValue.guard(() async {
       final auth = await ref
           .read(authRepositoryProvider)
           .login(email, password);
-
       return AuthSession(token: auth.accessToken, user: auth.user);
     });
+    _unlockAfterPassword();
   }
 
-  Future<bool> register({
+  Future<void> register({
     required String name,
     required String email,
     required String password,
     required String language,
   }) async {
     state = const AsyncLoading();
-
-    try {
-      await ref
+    state = await AsyncValue.guard(() async {
+      final auth = await ref
           .read(authRepositoryProvider)
           .register(
             name: name,
@@ -200,39 +195,29 @@ class AuthController extends AsyncNotifier<AuthSession> {
             password: password,
             language: language,
           );
+      return AuthSession(token: auth.accessToken, user: auth.user);
+    });
+    _unlockAfterPassword();
+  }
 
-      state = const AsyncData(AuthSession());
-
-      return true;
-    } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
-
-      return false;
+  void _unlockAfterPassword() {
+    if (state.valueOrNull?.isAuthenticated == true) {
+      ref.read(biometricLockProvider.notifier).unlock();
     }
   }
 
   Future<void> refreshProfile() async {
-    final currentSession = state.valueOrNull;
-
-    if (currentSession == null || !currentSession.isAuthenticated) {
+    final current = state.valueOrNull;
+    if (current == null || !current.isAuthenticated) {
       return;
     }
-
-    try {
-      final user = await ref
-          .read(authRepositoryProvider)
-          .me()
-          .timeout(const Duration(seconds: 10));
-
-      state = AsyncData(AuthSession(token: currentSession.token, user: user));
-    } catch (_) {
-      await logout();
-    }
+    final user = await ref.read(authRepositoryProvider).me();
+    state = AsyncData(AuthSession(token: current.token, user: user));
   }
 
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();
-
     state = const AsyncData(AuthSession());
+    ref.read(biometricLockProvider.notifier).lock();
   }
 }

@@ -707,4 +707,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get security => 'Security';
+
+  @override
+  String get biometricTitle => 'Fingerprint';
+
+  @override
+  String get biometricSubtitle => 'Require your fingerprint to open FinTrack.';
+
+  @override
+  String get biometricUnavailable => 'This device has no fingerprint set up.';
+
+  @override
+  String get biometricUnlockTitle => 'Confirm your fingerprint';
+
+  @override
+  String get biometricUnlockBody => 'Use your fingerprint to enter FinTrack.';
+
+  @override
+  String get biometricUnlockAction => 'Use fingerprint';
+
+  @override
+  String get biometricUsePassword => 'Sign in with password';
+
+  @override
+  String get biometricOfferTitle => 'Turn on fingerprint?';
+
+  @override
+  String get biometricOfferBody =>
+      'Next time you can open FinTrack with your fingerprint.';
+
+  @override
+  String get biometricEnable => 'Turn on';
+
+  @override
+  String get biometricNotNow => 'Not now';
+
+  @override
+  String get biometricFailed => 'The fingerprint could not be verified.';
 }

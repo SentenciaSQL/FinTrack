@@ -1447,6 +1447,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Seguridad'**
   String get security;
+
+  /// No description provided for @biometricTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Huella dactilar'**
+  String get biometricTitle;
+
+  /// No description provided for @biometricSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide la huella para abrir FinTrack.'**
+  String get biometricSubtitle;
+
+  /// No description provided for @biometricUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'Este dispositivo no tiene una huella configurada.'**
+  String get biometricUnavailable;
+
+  /// No description provided for @biometricUnlockTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma tu huella'**
+  String get biometricUnlockTitle;
+
+  /// No description provided for @biometricUnlockBody.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa la huella para entrar a FinTrack.'**
+  String get biometricUnlockBody;
+
+  /// No description provided for @biometricUnlockAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar huella'**
+  String get biometricUnlockAction;
+
+  /// No description provided for @biometricUsePassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar con contraseña'**
+  String get biometricUsePassword;
+
+  /// No description provided for @biometricOfferTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Activar la huella?'**
+  String get biometricOfferTitle;
+
+  /// No description provided for @biometricOfferBody.
+  ///
+  /// In es, this message translates to:
+  /// **'La próxima vez podrás abrir FinTrack con tu huella.'**
+  String get biometricOfferBody;
+
+  /// No description provided for @biometricEnable.
+  ///
+  /// In es, this message translates to:
+  /// **'Activar'**
+  String get biometricEnable;
+
+  /// No description provided for @biometricNotNow.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora no'**
+  String get biometricNotNow;
+
+  /// No description provided for @biometricFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo verificar la huella.'**
+  String get biometricFailed;
 }
 
 class _AppLocalizationsDelegate

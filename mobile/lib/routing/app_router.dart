@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:fintrack/core/constants/storage_keys.dart';
 import 'package:fintrack/core/storage/prefs_storage.dart';
 import 'package:fintrack/features/auth/data/auth_repository.dart';
+import 'package:fintrack/features/auth/data/biometric_auth.dart';
 import 'package:fintrack/features/auth/presentation/auth_screens.dart';
+import 'package:fintrack/features/auth/presentation/biometric_screen.dart';
 import 'package:fintrack/features/auth/presentation/onboarding_screen.dart';
 import 'package:fintrack/features/auth/presentation/splash_screen.dart';
 import 'package:fintrack/routing/auth_redirect.dart';
@@ -33,6 +35,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         status: authGateStatus(ref.read(authControllerProvider)),
         onboardingComplete: onboarding,
         location: state.matchedLocation,
+        biometricLock: ref.read(biometricLockProvider),
       );
     },
     routes: [
@@ -48,6 +51,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/unlock',
+        builder: (context, state) => const UnlockScreen(),
       ),
       GoRoute(
         path: '/transactions/new',
@@ -137,14 +144,17 @@ final routerProvider = Provider<GoRouter>((ref) {
 
 class _RouterRefresh extends ChangeNotifier {
   _RouterRefresh(Ref ref) {
-    _sub = ref.listen(authControllerProvider, (_, _) => notifyListeners());
+    _authSub = ref.listen(authControllerProvider, (_, _) => notifyListeners());
+    _lockSub = ref.listen(biometricLockProvider, (_, _) => notifyListeners());
   }
 
-  late final ProviderSubscription<AsyncValue<AuthSession>> _sub;
+  late final ProviderSubscription<AsyncValue<AuthSession>> _authSub;
+  late final ProviderSubscription<bool> _lockSub;
 
   @override
   void dispose() {
-    _sub.close();
+    _authSub.close();
+    _lockSub.close();
     super.dispose();
   }
 }
