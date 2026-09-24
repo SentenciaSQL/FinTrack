@@ -24,14 +24,22 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final auth = ref.read(authControllerProvider);
       final loc = state.matchedLocation;
-      final onboarding = ref.read(sharedPreferencesProvider).getBool(StorageKeys.onboardingComplete) ?? false;
+      final onboarding =
+          ref
+              .read(sharedPreferencesProvider)
+              .getBool(StorageKeys.onboardingComplete) ??
+          false;
 
       if (auth.isLoading) {
         return null;
       }
 
       if (auth.hasError) {
-        final onboarding = ref.read(sharedPreferencesProvider).getBool(StorageKeys.onboardingComplete) ?? false;
+        final onboarding =
+            ref
+                .read(sharedPreferencesProvider)
+                .getBool(StorageKeys.onboardingComplete) ??
+            false;
         if (!onboarding) {
           return loc == '/onboarding' ? null : '/onboarding';
         }
@@ -53,35 +61,99 @@ final routerProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(path: '/splash', builder: (context, state) => const SplashScreen()),
-      GoRoute(path: '/onboarding', builder: (context, state) => const OnboardingScreen()),
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegisterScreen(),
+      ),
       GoRoute(
         path: '/transactions/new',
-        builder: (context, state) => TransactionFormScreen(initialType: state.uri.queryParameters['type']),
+        builder: (context, state) => TransactionFormScreen(
+          initialType: state.uri.queryParameters['type'],
+        ),
       ),
       GoRoute(
         path: '/transactions/:id',
-        builder: (context, state) => TransactionDetailScreen(id: state.pathParameters['id']!),
+        builder: (context, state) =>
+            TransactionDetailScreen(id: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/transactions/:id/edit',
-        builder: (context, state) => TransactionFormScreen(id: state.pathParameters['id']!),
+        builder: (context, state) =>
+            TransactionFormScreen(id: state.pathParameters['id']!),
       ),
-      GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
-      GoRoute(path: '/settings', builder: (context, state) => const SettingsScreen()),
-      GoRoute(path: '/categories', builder: (context, state) => const CategoriesScreen()),
-      GoRoute(path: '/savings', builder: (context, state) => const SavingsScreen()),
-      GoRoute(path: '/recurring', builder: (context, state) => const RecurringScreen()),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/categories',
+        builder: (context, state) => const CategoriesScreen(),
+      ),
+      GoRoute(
+        path: '/savings',
+        builder: (context, state) => const SavingsScreen(),
+      ),
+      GoRoute(
+        path: '/recurring',
+        builder: (context, state) => const RecurringScreen(),
+      ),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),
+        builder: (context, state, navigationShell) =>
+            AppShell(navigationShell: navigationShell),
         branches: [
-          StatefulShellBranch(routes: [GoRoute(path: '/home', builder: (context, state) => const DashboardScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/transactions', builder: (context, state) => const TransactionsScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/budgets', builder: (context, state) => const BudgetsScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/reports', builder: (context, state) => const ReportsScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/more', builder: (context, state) => const MoreScreen())]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                builder: (context, state) => const DashboardScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/transactions',
+                builder: (context, state) => const TransactionsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/budgets',
+                builder: (context, state) => const BudgetsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/reports',
+                builder: (context, state) => const ReportsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/more',
+                builder: (context, state) => const MoreScreen(),
+              ),
+            ],
+          ),
         ],
       ),
     ],
@@ -90,14 +162,20 @@ final routerProvider = Provider<GoRouter>((ref) {
 
 class _RouterRefresh extends ChangeNotifier {
   _RouterRefresh(Ref ref) {
-          _sub = ref.listen(authControllerProvider, (_, _) => notifyListeners());
+    _subscription = ref.listen<AsyncValue<AuthSession>>(
+      authControllerProvider,
+      (previous, next) {
+        notifyListeners();
+      },
+      fireImmediately: true,
+    );
   }
 
-  late final ProviderSubscription<AsyncValue<AuthSession>> _sub;
+  late final ProviderSubscription<AsyncValue<AuthSession>> _subscription;
 
   @override
   void dispose() {
-    _sub.close();
+    _subscription.close();
     super.dispose();
   }
 }

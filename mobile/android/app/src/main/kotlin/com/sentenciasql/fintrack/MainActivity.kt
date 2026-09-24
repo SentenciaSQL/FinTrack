@@ -1,4 +1,4 @@
-package com.fintrack.fintrack
+package com.sentenciasql.fintrack
 
 import io.flutter.embedding.android.FlutterActivity
 

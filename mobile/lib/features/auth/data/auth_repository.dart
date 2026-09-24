@@ -17,10 +17,10 @@ class AuthRepository {
 
   Future<AuthResponse> login(String email, String password) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>('/auth/login', data: {
-        'email': email,
-        'password': password,
-      });
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/login',
+        data: {'email': email, 'password': password},
+      );
       final auth = AuthResponse.fromJson(response.data!);
       await _persist(auth);
       return auth;
@@ -36,13 +36,16 @@ class AuthRepository {
     required String language,
   }) async {
     try {
-      final response = await _dio.post<Map<String, dynamic>>('/auth/register', data: {
-        'name': name,
-        'email': email,
-        'password': password,
-        'preferredLanguage': language,
-        'preferredCurrency': _ref.read(currencyProvider),
-      });
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/register',
+        data: {
+          'name': name,
+          'email': email,
+          'password': password,
+          'preferredLanguage': language,
+          'preferredCurrency': _ref.read(currencyProvider),
+        },
+      );
       final auth = AuthResponse.fromJson(response.data!);
       await _persist(auth);
       return auth;
@@ -66,25 +69,33 @@ class AuthRepository {
     required String preferredCurrency,
   }) async {
     try {
-      final response = await _dio.put<Map<String, dynamic>>('/users/me', data: {
-        'name': name,
-        'preferredLanguage': preferredLanguage,
-        'preferredCurrency': preferredCurrency,
-      });
+      final response = await _dio.put<Map<String, dynamic>>(
+        '/users/me',
+        data: {
+          'name': name,
+          'preferredLanguage': preferredLanguage,
+          'preferredCurrency': preferredCurrency,
+        },
+      );
       final user = UserProfile.fromJson(response.data!);
-      await _ref.read(currencyProvider.notifier).setCurrency(user.preferredCurrency);
+      await _ref
+          .read(currencyProvider.notifier)
+          .setCurrency(user.preferredCurrency);
       return user;
     } catch (e) {
       throw toApiException(e);
     }
   }
 
-  Future<void> changePassword({required String currentPassword, required String newPassword}) async {
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
     try {
-      await _dio.put('/users/me/password', data: {
-        'currentPassword': currentPassword,
-        'newPassword': newPassword,
-      });
+      await _dio.put(
+        '/users/me/password',
+        data: {'currentPassword': currentPassword, 'newPassword': newPassword},
+      );
     } catch (e) {
       throw toApiException(e);
     }
@@ -94,76 +105,129 @@ class AuthRepository {
     await _ref.read(secureStorageProvider).delete(key: StorageKeys.accessToken);
   }
 
-  Future<String?> token() => _ref.read(secureStorageProvider).read(key: StorageKeys.accessToken);
+  Future<String?> token() =>
+      _ref.read(secureStorageProvider).read(key: StorageKeys.accessToken);
 
   Future<void> _persist(AuthResponse auth) async {
-    await _ref.read(secureStorageProvider).write(key: StorageKeys.accessToken, value: auth.accessToken);
-    await _ref.read(currencyProvider.notifier).setCurrency(auth.user.preferredCurrency);
+    await _ref
+        .read(secureStorageProvider)
+        .write(key: StorageKeys.accessToken, value: auth.accessToken);
+    await _ref
+        .read(currencyProvider.notifier)
+        .setCurrency(auth.user.preferredCurrency);
   }
 }
 
 class AuthSession {
   const AuthSession({this.token, this.user});
+
   final String? token;
   final UserProfile? user;
-  bool get isAuthenticated => token != null && token!.isNotEmpty;
+
+  bool get isAuthenticated {
+    return token != null && token!.isNotEmpty && user != null;
+  }
 }
 
-final authControllerProvider = AsyncNotifierProvider<AuthController, AuthSession>(AuthController.new);
+final authControllerProvider =
+    AsyncNotifierProvider<AuthController, AuthSession>(AuthController.new);
 
 class AuthController extends AsyncNotifier<AuthSession> {
   @override
   Future<AuthSession> build() async {
-    final repo = ref.read(authRepositoryProvider);
+    final repository = ref.read(authRepositoryProvider);
+
     try {
-      final token = await repo.token().timeout(const Duration(seconds: 2));
-      if (token == null || token.isEmpty) {
+      final token = await repository.token().timeout(
+        const Duration(seconds: 2),
+      );
+
+      if (token == null || token.trim().isEmpty) {
         return const AuthSession();
       }
+
       try {
-        final user = await repo.me().timeout(const Duration(seconds: 5));
-        await ref.read(currencyProvider.notifier).setCurrency(user.preferredCurrency);
+        final user = await repository.me().timeout(const Duration(seconds: 8));
+
+        await ref
+            .read(currencyProvider.notifier)
+            .setCurrency(user.preferredCurrency);
+
         return AuthSession(token: token, user: user);
-      } catch (_) {
-        return AuthSession(token: token);
+      } catch (error) {
+        await repository.logout();
+
+        return const AuthSession();
       }
-    } catch (_) {
+    } catch (error) {
+      await repository.logout();
+
       return const AuthSession();
     }
   }
 
   Future<void> login(String email, String password) async {
     state = const AsyncLoading();
+
     state = await AsyncValue.guard(() async {
-      final auth = await ref.read(authRepositoryProvider).login(email, password);
+      final auth = await ref
+          .read(authRepositoryProvider)
+          .login(email, password);
+
       return AuthSession(token: auth.accessToken, user: auth.user);
     });
   }
 
-  Future<void> register({required String name, required String email, required String password, required String language}) async {
+  Future<bool> register({
+    required String name,
+    required String email,
+    required String password,
+    required String language,
+  }) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      final auth = await ref.read(authRepositoryProvider).register(
+
+    try {
+      await ref
+          .read(authRepositoryProvider)
+          .register(
             name: name,
             email: email,
             password: password,
             language: language,
           );
-      return AuthSession(token: auth.accessToken, user: auth.user);
-    });
+
+      state = const AsyncData(AuthSession());
+
+      return true;
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+
+      return false;
+    }
   }
 
   Future<void> refreshProfile() async {
-    final current = state.valueOrNull;
-    if (current == null || !current.isAuthenticated) {
+    final currentSession = state.valueOrNull;
+
+    if (currentSession == null || !currentSession.isAuthenticated) {
       return;
     }
-    final user = await ref.read(authRepositoryProvider).me();
-    state = AsyncData(AuthSession(token: current.token, user: user));
+
+    try {
+      final user = await ref
+          .read(authRepositoryProvider)
+          .me()
+          .timeout(const Duration(seconds: 10));
+
+      state = AsyncData(AuthSession(token: currentSession.token, user: user));
+    } catch (_) {
+      await logout();
+    }
   }
 
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();
+
     state = const AsyncData(AuthSession());
   }
 }
