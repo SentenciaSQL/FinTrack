@@ -4,6 +4,7 @@ import 'package:fintrack/core/localization/locale_provider.dart';
 import 'package:fintrack/core/notifications/notification_service.dart';
 import 'package:fintrack/core/theme/app_theme.dart';
 import 'package:fintrack/core/theme/theme_provider.dart';
+import 'package:fintrack/features/auth/presentation/biometric_screen.dart';
 import 'package:fintrack/l10n/app_localizations.dart';
 import 'package:fintrack/routing/app_router.dart';
 
@@ -31,6 +32,7 @@ class FinTrackApp extends ConsumerWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       routerConfig: router,
+      builder: (context, child) => BiometricCoordinator(child: child ?? const SizedBox.shrink()),
     );
   }
 }

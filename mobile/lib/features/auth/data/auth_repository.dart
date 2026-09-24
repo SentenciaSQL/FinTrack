@@ -7,6 +7,7 @@ import 'package:fintrack/core/models/models.dart';
 import 'package:fintrack/core/network/dio_provider.dart';
 import 'package:fintrack/core/storage/secure_storage.dart';
 import 'package:fintrack/core/theme/theme_provider.dart';
+import 'package:fintrack/features/auth/data/biometric_auth.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(ref);
@@ -154,6 +155,7 @@ class AuthController extends AsyncNotifier<AuthSession> {
       final auth = await ref.read(authRepositoryProvider).login(email, password);
       return AuthSession(token: auth.accessToken, user: auth.user);
     });
+    _unlockAfterPassword();
   }
 
   Future<void> register({required String name, required String email, required String password, required String language}) async {
@@ -167,6 +169,13 @@ class AuthController extends AsyncNotifier<AuthSession> {
           );
       return AuthSession(token: auth.accessToken, user: auth.user);
     });
+    _unlockAfterPassword();
+  }
+
+  void _unlockAfterPassword() {
+    if (state.valueOrNull?.isAuthenticated == true) {
+      ref.read(biometricLockProvider.notifier).unlock();
+    }
   }
 
   Future<void> refreshProfile() async {
@@ -181,5 +190,6 @@ class AuthController extends AsyncNotifier<AuthSession> {
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();
     state = const AsyncData(AuthSession());
+    ref.read(biometricLockProvider.notifier).lock();
   }
 }

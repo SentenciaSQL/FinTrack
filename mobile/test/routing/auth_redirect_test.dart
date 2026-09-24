@@ -161,6 +161,58 @@ void main() {
     expect(find.text('splash-screen'), findsNothing);
   });
 
+  test('signed-in session with fingerprint lock opens the unlock screen', () {
+    expect(
+      resolveAppRedirect(
+        status: AuthGateStatus.signedIn,
+        onboardingComplete: true,
+        location: '/splash',
+        biometricLock: true,
+      ),
+      '/unlock',
+    );
+    expect(
+      resolveAppRedirect(
+        status: AuthGateStatus.signedIn,
+        onboardingComplete: true,
+        location: '/home',
+        biometricLock: true,
+      ),
+      '/unlock',
+    );
+    expect(
+      resolveAppRedirect(
+        status: AuthGateStatus.signedIn,
+        onboardingComplete: true,
+        location: '/unlock',
+        biometricLock: true,
+      ),
+      isNull,
+    );
+  });
+
+  test('unlocked session leaves the fingerprint screen', () {
+    expect(
+      resolveAppRedirect(
+        status: AuthGateStatus.signedIn,
+        onboardingComplete: true,
+        location: '/unlock',
+      ),
+      '/home',
+    );
+  });
+
+  test('signed-out user cannot stay on the fingerprint screen', () {
+    expect(
+      resolveAppRedirect(
+        status: AuthGateStatus.signedOut,
+        onboardingComplete: true,
+        location: '/unlock',
+      ),
+      '/login',
+    );
+  });
+
   testWidgets('router leaves splash for home when the session is restored', (
     tester,
   ) async {

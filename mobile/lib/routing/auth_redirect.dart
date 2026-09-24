@@ -19,6 +19,7 @@ const unauthenticatedEntryRoutes = {
   '/onboarding',
   '/login',
   '/register',
+  '/unlock',
 };
 
 /// Where to send the user, or null to keep [location].
@@ -30,6 +31,7 @@ String? resolveAppRedirect({
   required AuthGateStatus status,
   required bool onboardingComplete,
   required String location,
+  bool biometricLock = false,
 }) {
   if (status == AuthGateStatus.loading) {
     return null;
@@ -41,6 +43,10 @@ String? resolveAppRedirect({
 
   if (status == AuthGateStatus.signedOut) {
     return authEntryRoutes.contains(location) ? null : '/login';
+  }
+
+  if (biometricLock) {
+    return location == '/unlock' ? null : '/unlock';
   }
 
   if (unauthenticatedEntryRoutes.contains(location)) {

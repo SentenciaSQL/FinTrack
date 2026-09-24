@@ -11,6 +11,7 @@ import 'package:fintrack/core/utils/formatters.dart';
 import 'package:fintrack/core/widgets/money.dart';
 import 'package:fintrack/core/widgets/states.dart';
 import 'package:fintrack/features/auth/data/auth_repository.dart';
+import 'package:fintrack/features/auth/presentation/biometric_screen.dart';
 import 'package:fintrack/features/dashboard/data/finance_repository.dart';
 import 'package:fintrack/features/dashboard/presentation/providers.dart';
 
@@ -217,6 +218,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 24),
           Text(l10n.security, style: context.texts.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
           const SizedBox(height: 8),
+          const Card(child: BiometricSettingsTile()),
+          const SizedBox(height: 16),
           TextField(controller: _current, obscureText: true, decoration: InputDecoration(labelText: l10n.currentPassword)),
           const SizedBox(height: 12),
           TextField(controller: _next, obscureText: true, decoration: InputDecoration(labelText: l10n.newPassword)),

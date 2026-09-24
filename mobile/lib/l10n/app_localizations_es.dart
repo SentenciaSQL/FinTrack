@@ -707,4 +707,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get security => 'Seguridad';
+
+  @override
+  String get biometricTitle => 'Huella dactilar';
+
+  @override
+  String get biometricSubtitle => 'Pide la huella para abrir FinTrack.';
+
+  @override
+  String get biometricUnavailable =>
+      'Este dispositivo no tiene una huella configurada.';
+
+  @override
+  String get biometricUnlockTitle => 'Confirma tu huella';
+
+  @override
+  String get biometricUnlockBody => 'Usa la huella para entrar a FinTrack.';
+
+  @override
+  String get biometricUnlockAction => 'Usar huella';
+
+  @override
+  String get biometricUsePassword => 'Entrar con contraseña';
+
+  @override
+  String get biometricOfferTitle => '¿Activar la huella?';
+
+  @override
+  String get biometricOfferBody =>
+      'La próxima vez podrás abrir FinTrack con tu huella.';
+
+  @override
+  String get biometricEnable => 'Activar';
+
+  @override
+  String get biometricNotNow => 'Ahora no';
+
+  @override
+  String get biometricFailed => 'No se pudo verificar la huella.';
 }

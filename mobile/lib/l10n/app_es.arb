@@ -254,5 +254,17 @@
   "filterTransactions": "Filtrar movimientos",
   "moreOptions": "Más opciones",
   "languageAndRegion": "Idioma y región",
-  "security": "Seguridad"
+  "security": "Seguridad",
+  "biometricTitle": "Huella dactilar",
+  "biometricSubtitle": "Pide la huella para abrir FinTrack.",
+  "biometricUnavailable": "Este dispositivo no tiene una huella configurada.",
+  "biometricUnlockTitle": "Confirma tu huella",
+  "biometricUnlockBody": "Usa la huella para entrar a FinTrack.",
+  "biometricUnlockAction": "Usar huella",
+  "biometricUsePassword": "Entrar con contraseña",
+  "biometricOfferTitle": "¿Activar la huella?",
+  "biometricOfferBody": "La próxima vez podrás abrir FinTrack con tu huella.",
+  "biometricEnable": "Activar",
+  "biometricNotNow": "Ahora no",
+  "biometricFailed": "No se pudo verificar la huella."
 }
