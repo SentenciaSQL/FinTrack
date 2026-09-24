@@ -254,5 +254,17 @@
   "filterTransactions": "Filter transactions",
   "moreOptions": "More options",
   "languageAndRegion": "Language and region",
-  "security": "Security"
+  "security": "Security",
+  "biometricTitle": "Fingerprint",
+  "biometricSubtitle": "Require your fingerprint to open FinTrack.",
+  "biometricUnavailable": "This device has no fingerprint set up.",
+  "biometricUnlockTitle": "Confirm your fingerprint",
+  "biometricUnlockBody": "Use your fingerprint to enter FinTrack.",
+  "biometricUnlockAction": "Use fingerprint",
+  "biometricUsePassword": "Sign in with password",
+  "biometricOfferTitle": "Turn on fingerprint?",
+  "biometricOfferBody": "Next time you can open FinTrack with your fingerprint.",
+  "biometricEnable": "Turn on",
+  "biometricNotNow": "Not now",
+  "biometricFailed": "The fingerprint could not be verified."
 }
