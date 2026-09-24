@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fintrack/core/constants/storage_keys.dart';
@@ -135,34 +137,37 @@ final authControllerProvider =
 class AuthController extends AsyncNotifier<AuthSession> {
   @override
   Future<AuthSession> build() async {
-    final repository = ref.read(authRepositoryProvider);
-
-    try {
-      final token = await repository.token().timeout(
-        const Duration(seconds: 2),
-      );
-
-      if (token == null || token.trim().isEmpty) {
-        return const AuthSession();
-      }
-
-      try {
-        final user = await repository.me().timeout(const Duration(seconds: 8));
-
-        await ref
-            .read(currencyProvider.notifier)
-            .setCurrency(user.preferredCurrency);
-
-        return AuthSession(token: token, user: user);
-      } catch (error) {
-        await repository.logout();
-
-        return const AuthSession();
-      }
-    } catch (error) {
-      await repository.logout();
-
+    final repo = ref.read(authRepositoryProvider);
+    // The Android keystore often throws on the first read after the process
+    // is recreated. Retry that case, but never overlap a read that timed out:
+    // the platform call can still be in flight and a second one can stall.
+    final token = await _readStoredToken(repo);
+    if (token == null || token.isEmpty) {
       return const AuthSession();
+    }
+    try {
+      final user = await repo.me().timeout(const Duration(seconds: 5));
+      await ref
+          .read(currencyProvider.notifier)
+          .setCurrency(user.preferredCurrency);
+      return AuthSession(token: token, user: user);
+    } catch (_) {
+      return AuthSession(token: token);
+    }
+  }
+
+  Future<String?> _readStoredToken(AuthRepository repo) async {
+    const timeout = Duration(seconds: 6);
+    try {
+      return await repo.token().timeout(timeout);
+    } on TimeoutException {
+      return null;
+    } catch (_) {
+      try {
+        return await repo.token().timeout(timeout);
+      } catch (_) {
+        return null;
+      }
     }
   }
 
