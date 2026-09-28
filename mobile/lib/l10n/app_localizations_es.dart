@@ -539,7 +539,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errValidation => 'Revisa los datos e inténtalo de nuevo.';
 
   @override
-  String get errUnauthorized => 'Tu sesión expiró. Inicia sesión otra vez.';
+  String get errUnauthorized =>
+      'Tu sesión ha expirado. Vuelve a iniciar sesión.';
+
+  @override
+  String get errNetwork =>
+      'No se pudo conectar con el servidor. Revisa tu conexión a internet e inténtalo de nuevo.';
+
+  @override
+  String get errServer => 'Algo salió mal. Inténtalo de nuevo más tarde.';
 
   @override
   String get errCurrentPasswordIncorrect =>
@@ -745,4 +753,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get biometricFailed => 'No se pudo verificar la huella.';
+
+  @override
+  String get showPassword => 'Mostrar contraseña';
+
+  @override
+  String get hidePassword => 'Ocultar contraseña';
 }

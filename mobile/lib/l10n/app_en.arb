@@ -174,7 +174,9 @@
   "errResourceNotFound": "We couldn't find that resource.",
   "errForbidden": "You don't have permission for this action.",
   "errValidation": "Please review the data and try again.",
-  "errUnauthorized": "Your session expired. Please sign in again.",
+  "errUnauthorized": "Your session has expired. Please log in again.",
+  "errNetwork": "Unable to connect to the server. Please check your internet connection and try again.",
+  "errServer": "Something went wrong. Please try again later.",
   "errCurrentPasswordIncorrect": "The current password is incorrect.",
   "errBudgetAlreadyExists": "A budget already exists for this category and month.",
   "errCannotDeleteDefaultCategory": "Default categories cannot be deleted.",
@@ -266,5 +268,7 @@
   "biometricOfferBody": "Next time you can open FinTrack with your fingerprint.",
   "biometricEnable": "Turn on",
   "biometricNotNow": "Not now",
-  "biometricFailed": "The fingerprint could not be verified."
+  "biometricFailed": "The fingerprint could not be verified.",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password"
 }
