@@ -18,6 +18,11 @@ class LocaleNotifier extends Notifier<Locale> {
       return Locale(storedLanguage!);
     }
 
+    for (final device in WidgetsBinding.instance.platformDispatcher.locales) {
+      if (device.languageCode == 'en' || device.languageCode == 'es') {
+        return Locale(device.languageCode);
+      }
+    }
     return const Locale('es');
   }
 

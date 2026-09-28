@@ -174,7 +174,9 @@
   "errResourceNotFound": "No encontramos ese recurso.",
   "errForbidden": "No tienes permiso para esta acción.",
   "errValidation": "Revisa los datos e inténtalo de nuevo.",
-  "errUnauthorized": "Tu sesión expiró. Inicia sesión otra vez.",
+  "errUnauthorized": "Tu sesión ha expirado. Vuelve a iniciar sesión.",
+  "errNetwork": "No se pudo conectar con el servidor. Revisa tu conexión a internet e inténtalo de nuevo.",
+  "errServer": "Algo salió mal. Inténtalo de nuevo más tarde.",
   "errCurrentPasswordIncorrect": "La contraseña actual es incorrecta.",
   "errBudgetAlreadyExists": "Ya existe un presupuesto para esta categoría y mes.",
   "errCannotDeleteDefaultCategory": "Las categorías predeterminadas no se pueden eliminar.",
@@ -266,5 +268,7 @@
   "biometricOfferBody": "La próxima vez podrás abrir FinTrack con tu huella.",
   "biometricEnable": "Activar",
   "biometricNotNow": "Ahora no",
-  "biometricFailed": "No se pudo verificar la huella."
+  "biometricFailed": "No se pudo verificar la huella.",
+  "showPassword": "Mostrar contraseña",
+  "hidePassword": "Ocultar contraseña"
 }

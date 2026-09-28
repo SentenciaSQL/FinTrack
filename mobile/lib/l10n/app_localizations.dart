@@ -1145,8 +1145,20 @@ abstract class AppLocalizations {
   /// No description provided for @errUnauthorized.
   ///
   /// In es, this message translates to:
-  /// **'Tu sesión expiró. Inicia sesión otra vez.'**
+  /// **'Tu sesión ha expirado. Vuelve a iniciar sesión.'**
   String get errUnauthorized;
+
+  /// No description provided for @errNetwork.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo conectar con el servidor. Revisa tu conexión a internet e inténtalo de nuevo.'**
+  String get errNetwork;
+
+  /// No description provided for @errServer.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal. Inténtalo de nuevo más tarde.'**
+  String get errServer;
 
   /// No description provided for @errCurrentPasswordIncorrect.
   ///
@@ -1519,6 +1531,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo verificar la huella.'**
   String get biometricFailed;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar contraseña'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar contraseña'**
+  String get hidePassword;
 }
 
 class _AppLocalizationsDelegate

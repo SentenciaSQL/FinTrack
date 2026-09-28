@@ -118,7 +118,14 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                           ),
                           title: Text(tx.description),
                           subtitle: Text('${categoryLabel(l10n, tx.categoryName, tx.categoryIsDefault)} · ${DateFormatter.short(tx.date, locale)}'),
-                          trailing: AmountText(amount: tx.amount, currency: currency, locale: locale, isIncome: income, style: context.texts.bodyLarge),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              AmountText(amount: tx.amount, currency: currency, locale: locale, isIncome: income, style: context.texts.bodyLarge),
+                              Icon(Icons.chevron_right, size: 18, color: context.colors.outline),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -149,36 +156,75 @@ class TransactionDetailScreen extends ConsumerWidget {
       error: (error, _) => Scaffold(appBar: AppBar(), body: FtErrorState(message: mapErrorCode(l10n, error), onRetry: () => ref.invalidate(transactionProvider(id)))),
       data: (tx) {
         final income = tx.type == 'INCOME';
+        Future<void> deleteTransaction() async {
+          final ok = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(l10n.deleteConfirmTitle),
+              content: Text(l10n.deleteConfirmBody),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
+                FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(l10n.delete)),
+              ],
+            ),
+          );
+          if (ok != true || !context.mounted) {
+            return;
+          }
+          try {
+            await ref.read(financeRepositoryProvider).deleteTransaction(id);
+            ref.invalidate(transactionsProvider);
+            ref.invalidate(dashboardProvider);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.deletedSuccessfully)));
+              context.pop();
+            }
+          } catch (error) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mapErrorCode(l10n, error))));
+            }
+          }
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: Text(l10n.transactionDetails),
             actions: [
-              IconButton(onPressed: () => context.push('/transactions/$id/edit'), icon: const Icon(Icons.edit_outlined)),
               IconButton(
-                onPressed: () async {
-                  final ok = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(l10n.deleteConfirmTitle),
-                      content: Text(l10n.deleteConfirmBody),
-                      actions: [
-                        TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
-                        FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(l10n.delete)),
-                      ],
-                    ),
-                  );
-                  if (ok == true) {
-                    await ref.read(financeRepositoryProvider).deleteTransaction(id);
-                    ref.invalidate(transactionsProvider);
-                    ref.invalidate(dashboardProvider);
-                    if (context.mounted) {
-                      context.pop();
-                    }
-                  }
-                },
+                tooltip: l10n.edit,
+                onPressed: () => context.push('/transactions/$id/edit'),
+                icon: const Icon(Icons.edit_outlined),
+              ),
+              IconButton(
+                tooltip: l10n.delete,
+                onPressed: deleteTransaction,
                 icon: const Icon(Icons.delete_outline),
               ),
             ],
+          ),
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: deleteTransaction,
+                      icon: const Icon(Icons.delete_outline),
+                      label: Text(l10n.delete),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: () => context.push('/transactions/$id/edit'),
+                      icon: const Icon(Icons.edit_outlined),
+                      label: Text(l10n.edit),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           body: ListView(
             padding: const EdgeInsets.all(16),
@@ -228,27 +274,42 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
   String? _categoryId;
   DateTime _date = DateTime.now();
   var _loading = false;
+  var _hydrated = false;
+  String? _loadError;
 
   @override
   void initState() {
     super.initState();
     _type = widget.initialType ?? 'EXPENSE';
+    _hydrated = widget.id == null;
     if (widget.id != null) {
       Future.microtask(_load);
     }
   }
 
   Future<void> _load() async {
-    final tx = await ref.read(financeRepositoryProvider).transaction(widget.id!);
-    setState(() {
-      _type = tx.type;
-      _payment = tx.paymentMethod;
-      _categoryId = tx.categoryId;
-      _date = tx.date.toLocal();
-      _description.text = tx.description;
-      _amount.text = tx.amount.toString();
-      _notes.text = tx.notes ?? '';
-    });
+    try {
+      final tx = await ref.read(financeRepositoryProvider).transaction(widget.id!);
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _type = tx.type;
+        _payment = tx.paymentMethod;
+        _categoryId = tx.categoryId;
+        _date = tx.date.toLocal();
+        _description.text = tx.description;
+        _amount.text = tx.amount.toString();
+        _notes.text = tx.notes ?? '';
+        _hydrated = true;
+        _loadError = null;
+      });
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      setState(() => _loadError = mapErrorCode(context.l10n, error));
+    }
   }
 
   @override
@@ -264,6 +325,26 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
     final l10n = context.l10n;
     final categories = ref.watch(categoriesProvider).valueOrNull ?? [];
     final filtered = categories.where((c) => c.type == _type).toList();
+
+    if (_loadError != null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.editTransaction)),
+        body: FtErrorState(
+          message: _loadError!,
+          onRetry: () {
+            setState(() => _loadError = null);
+            _load();
+          },
+        ),
+      );
+    }
+
+    if (!_hydrated) {
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.editTransaction)),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.id == null ? l10n.newTransaction : l10n.editTransaction)),
@@ -350,7 +431,13 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
             const SizedBox(height: 24),
             FilledButton(
               onPressed: _loading ? null : _save,
-              child: _loading ? const CircularProgressIndicator() : Text(l10n.save),
+              child: _loading
+                  ? SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
+                    )
+                  : Text(l10n.save),
             ),
           ],
         ),
@@ -364,10 +451,14 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
     }
     setState(() => _loading = true);
     try {
+      final amount = double.tryParse(_amount.text.trim().replaceAll(',', '.'));
+      if (amount == null || _categoryId == null) {
+        return;
+      }
       await ref.read(financeRepositoryProvider).saveTransaction(
             id: widget.id,
             type: _type,
-            amount: double.parse(_amount.text.replaceAll(',', '.')),
+            amount: amount,
             description: _description.text.trim(),
             date: _date,
             categoryId: _categoryId!,
