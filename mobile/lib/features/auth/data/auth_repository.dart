@@ -131,26 +131,88 @@ class AuthSession {
 final authControllerProvider =
     AsyncNotifierProvider<AuthController, AuthSession>(AuthController.new);
 
+final sessionNoticeProvider = NotifierProvider<SessionNotice, bool>(
+  SessionNotice.new,
+);
+
+class SessionNotice extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void show() => state = true;
+
+  void dismiss() => state = false;
+}
+
 class AuthController extends AsyncNotifier<AuthSession> {
+  var _restoring = false;
+
   @override
   Future<AuthSession> build() async {
+    _restoring = true;
+    ref.listen<int>(sessionEpochProvider, (previous, next) {
+      if (previous == null || next == previous) {
+        return;
+      }
+      Future<void>(() => expireSession());
+    });
     final repo = ref.read(authRepositoryProvider);
     // The Android keystore often throws on the first read after the process
     // is recreated. Retry that case, but never overlap a read that timed out:
     // the platform call can still be in flight and a second one can stall.
-    final token = await _readStoredToken(repo);
-    if (token == null || token.isEmpty) {
-      return const AuthSession();
+    try {
+      final token = await _readStoredToken(repo);
+      if (token == null || token.isEmpty) {
+        return const AuthSession();
+      }
+      try {
+        final user = await repo.me().timeout(const Duration(seconds: 5));
+        await ref
+            .read(currencyProvider.notifier)
+            .setCurrency(user.preferredCurrency);
+        return AuthSession(token: token, user: user);
+      } catch (error) {
+        if (_isSessionRejected(error)) {
+          await repo.logout();
+          Future<void>(() {
+            try {
+              ref.read(sessionNoticeProvider.notifier).show();
+            } catch (_) {
+              // The app container can be disposed before this turn runs.
+            }
+          });
+          return const AuthSession();
+        }
+        return AuthSession(token: token);
+      }
+    } finally {
+      _restoring = false;
+    }
+  }
+
+  Future<void> expireSession() async {
+    if (_restoring) {
+      return;
     }
     try {
-      final user = await repo.me().timeout(const Duration(seconds: 5));
-      await ref
-          .read(currencyProvider.notifier)
-          .setCurrency(user.preferredCurrency);
-      return AuthSession(token: token, user: user);
+      if (state.valueOrNull?.isAuthenticated != true) {
+        return;
+      }
+      await ref.read(authRepositoryProvider).logout();
+      state = const AsyncData(AuthSession());
+      ref.read(biometricLockProvider.notifier).lock();
+      ref.read(sessionNoticeProvider.notifier).show();
     } catch (_) {
-      return AuthSession(token: token);
+      // The provider was disposed while the rejected request was finishing.
     }
+  }
+
+  bool _isSessionRejected(Object error) {
+    if (error is TimeoutException) {
+      return false;
+    }
+    final api = toApiException(error);
+    return api.code == 'UNAUTHORIZED' || api.statusCode == 401;
   }
 
   Future<String?> _readStoredToken(AuthRepository repo) async {

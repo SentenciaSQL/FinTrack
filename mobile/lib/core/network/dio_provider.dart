@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fintrack/core/constants/app_config.dart';
 import 'package:fintrack/core/constants/storage_keys.dart';
@@ -29,7 +30,12 @@ final dioProvider = Provider<Dio>((ref) {
         handler.next(options);
       },
       onError: (error, handler) {
-        handler.next(_mapDioError(error));
+        final mapped = _mapDioError(error);
+        final api = mapped.error;
+        if (api is ApiException && api.code == 'UNAUTHORIZED') {
+          _invalidateRejectedSession(ref, error.requestOptions.headers['Authorization']);
+        }
+        handler.next(mapped);
       },
     ),
   );
@@ -37,15 +43,55 @@ final dioProvider = Provider<Dio>((ref) {
   return dio;
 });
 
+/// Bumped when an authenticated request is rejected so the session can be cleared.
+final sessionEpochProvider = NotifierProvider<SessionEpoch, int>(SessionEpoch.new);
+
+class SessionEpoch extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  void markExpired() => state++;
+}
+
 DioException _mapDioError(DioException error) {
+  final status = error.response?.statusCode;
   final data = error.response?.data;
   String? code;
-  String message = error.message ?? 'Request failed';
+  String message = '';
 
-  if (data is Map<String, dynamic>) {
-    code = data['code'] as String?;
-    message = (data['message'] as String?) ?? (data['detail'] as String?) ?? message;
+  if (data is Map) {
+    final rawCode = data['code'];
+    if (rawCode is String && rawCode.isNotEmpty) {
+      code = rawCode;
+    }
+    message = _humanMessage(data) ?? '';
   }
+
+  if (_isCredentialRequest(error.requestOptions)) {
+    if (status == 401) {
+      code ??= 'INVALID_CREDENTIALS';
+    }
+  } else if (status == 401) {
+    code = 'UNAUTHORIZED';
+    message = '';
+  } else if (status == 403) {
+    code ??= 'FORBIDDEN';
+  } else if (_isTransportError(error)) {
+    code ??= 'NETWORK_ERROR';
+    message = '';
+  } else if (status != null && status >= 500) {
+    code ??= 'SERVER_ERROR';
+    message = '';
+  }
+
+  if (isTechnicalErrorText(message)) {
+    message = '';
+  }
+
+  debugPrint(
+    'FinTrack API ${error.requestOptions.method} ${error.requestOptions.uri} '
+    'failed status=$status type=${error.type} code=$code',
+  );
 
   return DioException(
     requestOptions: error.requestOptions,
@@ -53,21 +99,67 @@ DioException _mapDioError(DioException error) {
     type: error.type,
     error: ApiException(
       message: message,
-      statusCode: error.response?.statusCode,
+      statusCode: status,
       code: code,
     ),
   );
+}
+
+bool _isCredentialRequest(RequestOptions options) {
+  final path = options.uri.path;
+  return path.endsWith('/auth/login') || path.endsWith('/auth/register');
+}
+
+bool _isTransportError(DioException error) {
+  return error.type == DioExceptionType.connectionTimeout ||
+      error.type == DioExceptionType.sendTimeout ||
+      error.type == DioExceptionType.receiveTimeout ||
+      error.type == DioExceptionType.connectionError ||
+      (error.type == DioExceptionType.unknown && error.response == null);
+}
+
+String? _humanMessage(Map data) {
+  for (final key in const ['message', 'detail']) {
+    final value = data[key];
+    if (value is String && value.trim().isNotEmpty && !isTechnicalErrorText(value)) {
+      return value.trim();
+    }
+  }
+  return null;
+}
+
+void _invalidateRejectedSession(Ref ref, Object? authorization) {
+  final rejected = authorization is String && authorization.startsWith('Bearer ')
+      ? authorization.substring('Bearer '.length)
+      : null;
+  if (rejected == null || rejected.isEmpty) {
+    return;
+  }
+  Future<void>(() async {
+    try {
+      final current = await ref.read(secureStorageProvider).read(key: StorageKeys.accessToken);
+      if (current != null && current.isNotEmpty && current != rejected) {
+        return;
+      }
+      await ref.read(secureStorageProvider).delete(key: StorageKeys.accessToken);
+      ref.read(sessionEpochProvider.notifier).markExpired();
+    } catch (failure) {
+      debugPrint('FinTrack could not clear an expired session: $failure');
+    }
+  });
 }
 
 ApiException toApiException(Object error) {
   if (error is ApiException) {
     return error;
   }
-  if (error is DioException && error.error is ApiException) {
-    return error.error! as ApiException;
-  }
   if (error is DioException) {
-    return ApiException(message: error.message ?? 'Request failed', statusCode: error.response?.statusCode);
+    final wrapped = error.error;
+    if (wrapped is ApiException) {
+      return wrapped;
+    }
+    return _mapDioError(error).error! as ApiException;
   }
-  return ApiException(message: error.toString());
+  debugPrint('FinTrack unexpected error: $error');
+  return ApiException(message: '', code: 'SERVER_ERROR');
 }

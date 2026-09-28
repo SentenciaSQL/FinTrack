@@ -35,8 +35,10 @@ class FtEmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(title, textAlign: TextAlign.center, style: context.texts.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 8),
-            Text(subtitle, textAlign: TextAlign.center, style: context.texts.bodyMedium?.copyWith(color: context.colors.onSurfaceVariant)),
+            if (subtitle.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(subtitle, textAlign: TextAlign.center, style: context.texts.bodyMedium?.copyWith(color: context.colors.onSurfaceVariant)),
+            ],
             if (actionLabel != null && onAction != null) ...[
               const SizedBox(height: 20),
               FilledButton(onPressed: onAction, child: Text(actionLabel!)),
@@ -58,8 +60,8 @@ class FtErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return FtEmptyState(
       icon: Icons.error_outline_rounded,
-      title: context.l10n.errorGeneric,
-      subtitle: message,
+      title: message,
+      subtitle: '',
       actionLabel: context.l10n.retry,
       onAction: onRetry,
     );

@@ -203,14 +203,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 16),
           FilledButton(
             onPressed: () async {
-              await ref.read(authRepositoryProvider).updateProfile(
-                    name: _name.text.trim(),
-                    preferredLanguage: ref.read(localeProvider).languageCode,
-                    preferredCurrency: ref.read(currencyProvider),
-                  );
-              await ref.read(authControllerProvider.notifier).refreshProfile();
-              if (mounted) {
+              try {
+                await ref.read(authRepositoryProvider).updateProfile(
+                      name: _name.text.trim(),
+                      preferredLanguage: ref.read(localeProvider).languageCode,
+                      preferredCurrency: ref.read(currencyProvider),
+                    );
+                await ref.read(authControllerProvider.notifier).refreshProfile();
+                if (!context.mounted) {
+                  return;
+                }
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profileUpdated)));
+              } catch (error) {
+                if (!context.mounted) {
+                  return;
+                }
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mapErrorCode(l10n, error))));
               }
             },
             child: Text(l10n.save),
