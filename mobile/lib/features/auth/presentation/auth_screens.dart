@@ -6,6 +6,7 @@ import 'package:fintrack/core/errors/error_mapper.dart';
 import 'package:fintrack/core/extensions/context_extensions.dart';
 import 'package:fintrack/core/localization/locale_provider.dart';
 import 'package:fintrack/features/auth/data/auth_repository.dart';
+import 'package:fintrack/features/auth/presentation/sso_section.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -44,6 +45,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final auth = ref.watch(authControllerProvider);
+    final ssoBusy = ref.watch(ssoFlowProvider).isBusy;
     final locale = ref.watch(localeProvider);
     ref.listen(authControllerProvider, (previous, next) {
       next.whenOrNull(
@@ -80,6 +82,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(height: 8),
             Text(l10n.loginSubtitle, style: context.texts.bodyLarge?.copyWith(color: context.colors.onSurfaceVariant)),
             const SizedBox(height: 32),
+            const SsoSignInSection(),
             Form(
               key: _form,
               child: AutofillGroup(
@@ -119,7 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             const SizedBox(height: 24),
             FilledButton(
-              onPressed: auth.isLoading ? null : _submit,
+              onPressed: auth.isLoading || ssoBusy ? null : _submit,
               child: auth.isLoading ? const _ButtonSpinner() : Text(l10n.signIn),
             ),
             const SizedBox(height: 16),
@@ -176,6 +179,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final auth = ref.watch(authControllerProvider);
+    final ssoBusy = ref.watch(ssoFlowProvider).isBusy;
     ref.listen(authControllerProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
@@ -199,6 +203,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           const SizedBox(height: 8),
           Text(l10n.registerSubtitle, style: context.texts.bodyLarge?.copyWith(color: context.colors.onSurfaceVariant)),
           const SizedBox(height: 32),
+          const SsoSignInSection(),
           Form(
             key: _form,
             child: AutofillGroup(
@@ -251,7 +256,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
           const SizedBox(height: 24),
           FilledButton(
-            onPressed: auth.isLoading ? null : _submit,
+            onPressed: auth.isLoading || ssoBusy ? null : _submit,
             child: auth.isLoading ? const _ButtonSpinner() : Text(l10n.createAccount),
           ),
           const SizedBox(height: 16),

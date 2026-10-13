@@ -13,6 +13,7 @@ public interface IUserService
     Task<UserProfileDto> GetCurrentAsync(CancellationToken cancellationToken = default);
     Task<UserProfileDto> UpdateCurrentAsync(UpdateProfileRequest request, CancellationToken cancellationToken = default);
     Task ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken = default);
+    Task SetInitialPasswordAsync(SetInitialPasswordRequest request, CancellationToken cancellationToken = default);
 }
 
 public interface IJwtTokenService

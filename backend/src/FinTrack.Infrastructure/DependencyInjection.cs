@@ -1,6 +1,7 @@
 using System.Text;
 using FinTrack.Application.Interfaces;
 using FinTrack.Infrastructure.Auth;
+using FinTrack.Infrastructure.Auth.Sso;
 using FinTrack.Infrastructure.BackgroundJobs;
 using FinTrack.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,6 +28,14 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.Configure<SsoOptions>(configuration.GetSection(SsoOptions.SectionName));
+        services.PostConfigure<SsoOptions>(SsoEnvironment.Apply);
+        services.AddSingleton<ISsoConfiguration, SsoConfiguration>();
+        services.AddSingleton<IIdentityProviderClient, OidcIdentityProviderClient>();
+        services.AddHttpClient("fintrack-sso", client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(15);
+        });
         services.AddHostedService<RecurringTransactionProcessor>();
 
         var secret = configuration["Jwt:Secret"] ?? "replace-with-a-secure-secret-that-is-long-enough-123456";

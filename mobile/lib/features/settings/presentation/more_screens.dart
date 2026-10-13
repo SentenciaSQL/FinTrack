@@ -12,6 +12,7 @@ import 'package:fintrack/core/widgets/money.dart';
 import 'package:fintrack/core/widgets/states.dart';
 import 'package:fintrack/features/auth/data/auth_repository.dart';
 import 'package:fintrack/features/auth/presentation/biometric_screen.dart';
+import 'package:fintrack/features/auth/presentation/sso_section.dart';
 import 'package:fintrack/features/dashboard/data/finance_repository.dart';
 import 'package:fintrack/features/dashboard/presentation/providers.dart';
 
@@ -167,8 +168,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _name = TextEditingController();
-  final _current = TextEditingController();
-  final _next = TextEditingController();
 
   @override
   void initState() {
@@ -180,8 +179,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void dispose() {
     _name.dispose();
-    _current.dispose();
-    _next.dispose();
     super.dispose();
   }
 
@@ -227,26 +224,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           Text(l10n.security, style: context.texts.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
           const SizedBox(height: 8),
           const Card(child: BiometricSettingsTile()),
-          const SizedBox(height: 16),
-          TextField(controller: _current, obscureText: true, decoration: InputDecoration(labelText: l10n.currentPassword)),
-          const SizedBox(height: 12),
-          TextField(controller: _next, obscureText: true, decoration: InputDecoration(labelText: l10n.newPassword)),
-          const SizedBox(height: 16),
-          FilledButton.tonal(
-            onPressed: () async {
-              try {
-                await ref.read(authRepositoryProvider).changePassword(currentPassword: _current.text, newPassword: _next.text);
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.passwordChanged)));
-                }
-              } catch (error) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mapErrorCode(l10n, error))));
-                }
-              }
-            },
-            child: Text(l10n.changePassword),
-          ),
+          const SizedBox(height: 24),
+          const SignInMethodsSection(),
           const SizedBox(height: 24),
           OutlinedButton(
             onPressed: () async {

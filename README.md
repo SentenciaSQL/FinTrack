@@ -50,6 +50,7 @@ FinTrack is a portfolio-ready full-stack product, not a CRUD sample.
 ## Features
 
 - Email/password registration and login with JWT
+- Optional single sign-on with Google, Microsoft Entra ID, or another OpenID Connect provider ([setup guide](docs/sso.md))
 - Profile, preferred language, preferred currency, and password change
 - Income and expense tracking with categories, notes, and payment methods
 - Search, filters, sorting, and pagination
@@ -91,6 +92,7 @@ FinTrack is a portfolio-ready full-stack product, not a CRUD sample.
 - Entity Framework Core + Npgsql
 - PostgreSQL
 - JWT Bearer authentication
+- OpenID Connect authorization code flow with PKCE for optional SSO
 - BCrypt password hashing
 - FluentValidation, AutoMapper
 - Serilog
@@ -332,7 +334,9 @@ JWT_AUDIENCE=FinTrackMobile
 JWT_EXPIRATION_MINUTES=1440
 ```
 
-Never commit a real `.env` or production JWT secret.
+SSO is optional and stays disabled until you set provider credentials. The variable names, redirect URIs, and Google / Microsoft registration steps are in [docs/sso.md](docs/sso.md).
+
+Never commit a real `.env`, production JWT secret, or identity-provider client secret.
 
 Without Docker, the API reads `backend/src/FinTrack.Api/appsettings.Development.json` instead.
 
@@ -371,8 +375,6 @@ In **Development**, Settings includes **Load demo data** / **Cargar datos de dem
 ## Roadmap
 
 - Refresh tokens
-- Biometric unlock
-- Google Sign-In
 - Sign in with Apple
 - Firebase Cloud Messaging
 - Receipt OCR

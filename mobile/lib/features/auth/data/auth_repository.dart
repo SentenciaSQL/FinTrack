@@ -1,13 +1,18 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:fintrack/core/constants/storage_keys.dart';
+import 'package:fintrack/core/localization/locale_provider.dart';
+import 'package:fintrack/core/errors/api_exception.dart';
 import 'package:fintrack/core/models/models.dart';
 import 'package:fintrack/core/network/dio_provider.dart';
 import 'package:fintrack/core/storage/secure_storage.dart';
 import 'package:fintrack/core/theme/theme_provider.dart';
 import 'package:fintrack/features/auth/data/biometric_auth.dart';
+import 'package:fintrack/routing/return_path.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(ref);
@@ -106,6 +111,154 @@ class AuthRepository {
 
   Future<void> logout() async {
     await _ref.read(secureStorageProvider).delete(key: StorageKeys.accessToken);
+  }
+
+  Future<List<SsoProvider>> ssoProviders() async {
+    try {
+      final response = await _dio.get<List<dynamic>>(
+        '/auth/sso/providers',
+        options: Options(extra: const {'skipAuth': true}),
+      );
+      return (response.data ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(SsoProvider.fromJson)
+          .toList();
+    } catch (error) {
+      throw toApiException(error);
+    }
+  }
+
+  Future<SsoCompletion> signInWithProvider({
+    required String provider,
+    required String intent,
+    required String language,
+    required String currency,
+    String? returnPath,
+  }) async {
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/sso/start',
+        data: {
+          'provider': provider,
+          'intent': intent,
+          'returnPath': returnPath,
+          'preferredLanguage': language,
+          'preferredCurrency': currency,
+        },
+        options: Options(
+          extra: {'skipAuth': intent != 'link'},
+          receiveTimeout: const Duration(seconds: 20),
+        ),
+      );
+      final body = response.data ?? const {};
+      final authorizationUrl = body['authorizationUrl'] as String?;
+      final state = body['state'] as String?;
+      if (authorizationUrl == null ||
+          authorizationUrl.isEmpty ||
+          state == null ||
+          state.isEmpty) {
+        throw ApiException(message: '', code: 'SSO_INVALID');
+      }
+      final callback = await FlutterWebAuth2.authenticate(
+        url: authorizationUrl,
+        callbackUrlScheme: 'fintrack',
+      );
+      final parsed = Uri.parse(callback);
+      final callbackError = parsed.queryParameters['error'];
+      if (callbackError != null && callbackError.isNotEmpty) {
+        throw ApiException(message: '', code: callbackError);
+      }
+      final code = parsed.queryParameters['code'];
+      if (code == null || code.isEmpty) {
+        throw ApiException(message: '', code: 'SSO_INVALID');
+      }
+      final exchanged = await _dio.post<Map<String, dynamic>>(
+        '/auth/sso/exchange',
+        data: {'code': code, 'state': state},
+        options: Options(
+          extra: const {'skipAuth': true},
+          receiveTimeout: const Duration(seconds: 20),
+          sendTimeout: const Duration(seconds: 20),
+        ),
+      );
+      final completion = SsoCompletion.fromJson(exchanged.data ?? const {});
+      if (completion is SsoAuthenticated) {
+        await _persist(completion.auth);
+      }
+      return completion;
+    } on PlatformException catch (error) {
+      final code = error.code.toLowerCase();
+      if (code.contains('cancel')) {
+        throw ApiException(message: '', code: 'SSO_CANCELLED');
+      }
+      throw ApiException(message: '', code: 'SSO_PROVIDER_ERROR');
+    } catch (error) {
+      throw toApiException(error);
+    }
+  }
+
+  Future<SsoAuthenticated> linkWithPassword({
+    required String linkToken,
+    required String password,
+  }) async {
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/sso/link',
+        data: {'linkToken': linkToken, 'password': password},
+        options: Options(
+          extra: const {'skipAuth': true},
+          receiveTimeout: const Duration(seconds: 20),
+        ),
+      );
+      final completion = SsoCompletion.fromJson(response.data ?? const {});
+      if (completion is! SsoAuthenticated) {
+        throw ApiException(message: '', code: 'SSO_INVALID');
+      }
+      await _persist(completion.auth);
+      return completion;
+    } catch (error) {
+      throw toApiException(error);
+    }
+  }
+
+  Future<AuthMethods> authMethods() async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        '/users/me/auth-methods',
+      );
+      return AuthMethods.fromJson(response.data ?? const {});
+    } catch (error) {
+      throw toApiException(error);
+    }
+  }
+
+  Future<void> unlinkProvider(String provider) async {
+    try {
+      await _dio.delete('/users/me/auth-methods/$provider');
+    } catch (error) {
+      throw toApiException(error);
+    }
+  }
+
+  Future<void> setInitialPassword(String newPassword) async {
+    try {
+      await _dio.post(
+        '/users/me/password',
+        data: {'newPassword': newPassword},
+      );
+    } catch (error) {
+      throw toApiException(error);
+    }
+  }
+
+  Future<String?> ssoLogoutUrl() async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>('/auth/sso/logout');
+      final url = response.data?['url'];
+      return url is String && url.isNotEmpty ? url : null;
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<String?> token() =>
@@ -277,9 +430,213 @@ class AuthController extends AsyncNotifier<AuthSession> {
     state = AsyncData(AuthSession(token: current.token, user: user));
   }
 
+  Future<void> adopt(AuthResponse auth) async {
+    state = AsyncData(AuthSession(token: auth.accessToken, user: auth.user));
+    ref.read(biometricLockProvider.notifier).unlock();
+  }
+
   Future<void> logout() async {
+    final endSession = await ref.read(authRepositoryProvider).ssoLogoutUrl();
     await ref.read(authRepositoryProvider).logout();
     state = const AsyncData(AuthSession());
     ref.read(biometricLockProvider.notifier).lock();
+    if (endSession != null) {
+      try {
+        await FlutterWebAuth2.authenticate(
+          url: endSession,
+          callbackUrlScheme: 'fintrack',
+        );
+      } catch (_) {
+        // Local sign-out already succeeded. Closing the provider page is enough.
+      }
+    }
   }
 }
+
+class SsoProvider {
+  const SsoProvider({required this.id, required this.displayName});
+
+  final String id;
+  final String displayName;
+
+  factory SsoProvider.fromJson(Map<String, dynamic> json) => SsoProvider(
+    id: json['id'] as String? ?? '',
+    displayName: json['displayName'] as String? ?? '',
+  );
+}
+
+sealed class SsoCompletion {
+  const SsoCompletion();
+
+  factory SsoCompletion.fromJson(Map<String, dynamic> json) {
+    final status = json['status'] as String? ?? '';
+    final returnPath = json['returnPath'] as String?;
+    switch (status) {
+      case 'authenticated':
+        return SsoAuthenticated(
+          auth: AuthResponse.fromJson(json),
+          returnPath: returnPath,
+        );
+      case 'link_required':
+        return SsoLinkRequired(
+          linkToken: json['linkToken'] as String? ?? '',
+          email: json['email'] as String? ?? '',
+          provider: json['provider'] as String? ?? '',
+          providerDisplayName: json['providerDisplayName'] as String? ?? '',
+          canUsePassword: json['canUsePassword'] as bool? ?? false,
+          returnPath: returnPath,
+        );
+      case 'linked':
+        return SsoLinked(
+          provider: json['provider'] as String? ?? '',
+          providerDisplayName: json['providerDisplayName'] as String? ?? '',
+          email: json['email'] as String?,
+        );
+      default:
+        throw ApiException(message: '', code: 'SSO_INVALID');
+    }
+  }
+}
+
+class SsoAuthenticated extends SsoCompletion {
+  const SsoAuthenticated({required this.auth, this.returnPath});
+
+  final AuthResponse auth;
+  final String? returnPath;
+}
+
+class SsoLinkRequired extends SsoCompletion {
+  const SsoLinkRequired({
+    required this.linkToken,
+    required this.email,
+    required this.provider,
+    required this.providerDisplayName,
+    required this.canUsePassword,
+    this.returnPath,
+  });
+
+  final String linkToken;
+  final String email;
+  final String provider;
+  final String providerDisplayName;
+  final bool canUsePassword;
+  final String? returnPath;
+}
+
+class SsoLinked extends SsoCompletion {
+  const SsoLinked({
+    required this.provider,
+    required this.providerDisplayName,
+    this.email,
+  });
+
+  final String provider;
+  final String providerDisplayName;
+  final String? email;
+}
+
+class AuthMethods {
+  const AuthMethods({
+    required this.hasPassword,
+    required this.methods,
+    required this.availableProviders,
+  });
+
+  final bool hasPassword;
+  final List<LinkedAuthMethod> methods;
+  final List<SsoProvider> availableProviders;
+
+  factory AuthMethods.fromJson(Map<String, dynamic> json) => AuthMethods(
+    hasPassword: json['hasPassword'] as bool? ?? false,
+    methods: (json['methods'] as List<dynamic>? ?? const [])
+        .whereType<Map<String, dynamic>>()
+        .map(LinkedAuthMethod.fromJson)
+        .toList(),
+    availableProviders: (json['availableProviders'] as List<dynamic>? ?? const [])
+        .whereType<Map<String, dynamic>>()
+        .map(SsoProvider.fromJson)
+        .toList(),
+  );
+}
+
+class LinkedAuthMethod {
+  const LinkedAuthMethod({
+    required this.provider,
+    required this.displayName,
+    required this.linkedAt,
+    this.email,
+  });
+
+  final String provider;
+  final String displayName;
+  final String? email;
+  final DateTime linkedAt;
+
+  factory LinkedAuthMethod.fromJson(Map<String, dynamic> json) =>
+      LinkedAuthMethod(
+        provider: json['provider'] as String? ?? '',
+        displayName: json['displayName'] as String? ?? '',
+        email: json['email'] as String?,
+        linkedAt: DateTime.tryParse(json['linkedAt'] as String? ?? '') ??
+            DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      );
+}
+
+final ssoProvidersProvider = FutureProvider<List<SsoProvider>>((ref) async {
+  return ref.watch(authRepositoryProvider).ssoProviders();
+});
+
+final authMethodsProvider = FutureProvider.autoDispose<AuthMethods>((
+  ref,
+) async {
+  final session = ref.watch(authControllerProvider);
+  if (session.valueOrNull?.isAuthenticated != true) {
+    throw ApiException(message: '', code: 'UNAUTHORIZED');
+  }
+  return ref.watch(authRepositoryProvider).authMethods();
+});
+
+class SsoFlowState {
+  const SsoFlowState({this.busyProviderId});
+
+  final String? busyProviderId;
+  bool get isBusy => busyProviderId != null;
+}
+
+class SsoFlow extends Notifier<SsoFlowState> {
+  @override
+  SsoFlowState build() => const SsoFlowState();
+
+  Future<SsoCompletion> start({
+    required String provider,
+    required String intent,
+    String? returnPath,
+  }) async {
+    state = SsoFlowState(busyProviderId: provider);
+    try {
+      final completion = await ref
+          .read(authRepositoryProvider)
+          .signInWithProvider(
+            provider: provider,
+            intent: intent,
+            language: ref.read(localeProvider).languageCode,
+            currency: ref.read(currencyProvider),
+            returnPath: sanitizeReturnPath(returnPath),
+          );
+      if (completion is SsoAuthenticated) {
+        final back = sanitizeReturnPath(completion.returnPath);
+        if (back != null) {
+          ref.read(returnPathProvider.notifier).remember(back);
+        }
+        await ref.read(authControllerProvider.notifier).adopt(completion.auth);
+      } else if (completion is SsoLinked) {
+        ref.invalidate(authMethodsProvider);
+      }
+      return completion;
+    } finally {
+      state = const SsoFlowState();
+    }
+  }
+}
+
+final ssoFlowProvider = NotifierProvider<SsoFlow, SsoFlowState>(SsoFlow.new);

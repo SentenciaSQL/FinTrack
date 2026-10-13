@@ -1,8 +1,13 @@
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 using FinTrack.Api.Middleware;
 using FinTrack.Application;
+using FinTrack.Application.Common;
+using FinTrack.Application.Interfaces;
 using FinTrack.Infrastructure;
 using FinTrack.Infrastructure.Persistence;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -32,6 +37,35 @@ try
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
+
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        // The container sits behind a reverse proxy that overwrites these headers.
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+
+    builder.Services.AddRateLimiter(options =>
+    {
+        options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        options.OnRejected = async (context, token) =>
+        {
+            context.HttpContext.Response.ContentType = "application/problem+json";
+            await context.HttpContext.Response.WriteAsync(
+                "{\"status\":429,\"code\":\"" + ErrorCodes.TooManyRequests + "\",\"message\":\"Too many attempts. Wait a moment and try again.\"}",
+                token);
+        };
+        options.AddPolicy("auth", httpContext =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 30,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueLimit = 0
+                }));
+    });
 
     builder.Services.AddCors(options =>
     {
@@ -93,8 +127,17 @@ try
         }
     }
 
+    var ssoLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Sso");
+    var enabledProviders = app.Services.GetRequiredService<IIdentityProviderClient>().ListEnabled();
+    ssoLogger.LogInformation(
+        "SSO providers ready: {Providers}",
+        enabledProviders.Count == 0 ? "none" : string.Join(", ", enabledProviders.Select(provider => provider.Id)));
+
+    app.UseForwardedHeaders();
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
+    app.UseRouting();
+    app.UseRateLimiter();
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {

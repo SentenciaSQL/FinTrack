@@ -1543,6 +1543,228 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ocultar contraseña'**
   String get hidePassword;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar con Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @continueWithMicrosoft.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar con Microsoft'**
+  String get continueWithMicrosoft;
+
+  /// No description provided for @continueWithProvider.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar con {provider}'**
+  String continueWithProvider(String provider);
+
+  /// No description provided for @orDivider.
+  ///
+  /// In es, this message translates to:
+  /// **'o'**
+  String get orDivider;
+
+  /// No description provided for @ssoCancelled.
+  ///
+  /// In es, this message translates to:
+  /// **'Se canceló el inicio de sesión.'**
+  String get ssoCancelled;
+
+  /// No description provided for @ssoExpired.
+  ///
+  /// In es, this message translates to:
+  /// **'El intento de inicio de sesión expiró. Inténtalo de nuevo.'**
+  String get ssoExpired;
+
+  /// No description provided for @ssoProviderError.
+  ///
+  /// In es, this message translates to:
+  /// **'El proveedor no pudo completar el inicio de sesión. Inténtalo de nuevo.'**
+  String get ssoProviderError;
+
+  /// No description provided for @ssoEmailUnverified.
+  ///
+  /// In es, this message translates to:
+  /// **'El proveedor no confirmó el correo. Verifícalo allí, o entra con tu contraseña y conecta el proveedor desde Perfil.'**
+  String get ssoEmailUnverified;
+
+  /// No description provided for @ssoEmailRequired.
+  ///
+  /// In es, this message translates to:
+  /// **'El proveedor no compartió un correo electrónico.'**
+  String get ssoEmailRequired;
+
+  /// No description provided for @ssoRegistrationDisabled.
+  ///
+  /// In es, this message translates to:
+  /// **'El registro de cuentas nuevas está desactivado. Entra con una cuenta existente y conecta el proveedor desde Perfil.'**
+  String get ssoRegistrationDisabled;
+
+  /// No description provided for @ssoIdentityInUse.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese inicio de sesión ya está vinculado a otra cuenta de FinTrack.'**
+  String get ssoIdentityInUse;
+
+  /// No description provided for @ssoAlreadyLinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese proveedor ya está conectado.'**
+  String get ssoAlreadyLinked;
+
+  /// No description provided for @ssoProviderAlreadyLinked.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cuenta ya tiene ese proveedor conectado.'**
+  String get ssoProviderAlreadyLinked;
+
+  /// No description provided for @ssoLastMethod.
+  ///
+  /// In es, this message translates to:
+  /// **'Conserva una contraseña u otro método de acceso antes de desconectar este.'**
+  String get ssoLastMethod;
+
+  /// No description provided for @ssoLinkUnavailable.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya existe una cuenta con ese correo. Entra con el método que ya usas y conecta este proveedor desde Perfil.'**
+  String get ssoLinkUnavailable;
+
+  /// No description provided for @ssoInvalid.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo completar el inicio de sesión. Inténtalo de nuevo.'**
+  String get ssoInvalid;
+
+  /// No description provided for @ssoDisabled.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese método de acceso no está disponible.'**
+  String get ssoDisabled;
+
+  /// No description provided for @passwordNotSet.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cuenta todavía no tiene contraseña. Crea una aquí o usa un proveedor conectado.'**
+  String get passwordNotSet;
+
+  /// No description provided for @passwordAlreadySet.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cuenta ya tiene contraseña. Usa Cambiar contraseña.'**
+  String get passwordAlreadySet;
+
+  /// No description provided for @linkAccountTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincula tu cuenta'**
+  String get linkAccountTitle;
+
+  /// No description provided for @linkAccountBody.
+  ///
+  /// In es, this message translates to:
+  /// **'{email} ya tiene una cuenta de FinTrack. Escribe su contraseña para conectar {provider}. Tus movimientos y ajustes se conservan.'**
+  String linkAccountBody(String email, String provider);
+
+  /// No description provided for @linkAccountAction.
+  ///
+  /// In es, this message translates to:
+  /// **'Vincular cuenta'**
+  String get linkAccountAction;
+
+  /// No description provided for @signInMethods.
+  ///
+  /// In es, this message translates to:
+  /// **'Métodos de acceso'**
+  String get signInMethods;
+
+  /// No description provided for @passwordMethod.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña'**
+  String get passwordMethod;
+
+  /// No description provided for @passwordSet.
+  ///
+  /// In es, this message translates to:
+  /// **'Configurada'**
+  String get passwordSet;
+
+  /// No description provided for @passwordMissing.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin configurar'**
+  String get passwordMissing;
+
+  /// No description provided for @setPassword.
+  ///
+  /// In es, this message translates to:
+  /// **'Crear contraseña'**
+  String get setPassword;
+
+  /// No description provided for @connected.
+  ///
+  /// In es, this message translates to:
+  /// **'Conectado'**
+  String get connected;
+
+  /// No description provided for @connect.
+  ///
+  /// In es, this message translates to:
+  /// **'Conectar'**
+  String get connect;
+
+  /// No description provided for @disconnect.
+  ///
+  /// In es, this message translates to:
+  /// **'Desconectar'**
+  String get disconnect;
+
+  /// No description provided for @disconnectTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Desconectar {provider}?'**
+  String disconnectTitle(String provider);
+
+  /// No description provided for @disconnectBody.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no podrás entrar con {provider}.'**
+  String disconnectBody(String provider);
+
+  /// No description provided for @providerConnected.
+  ///
+  /// In es, this message translates to:
+  /// **'{provider} conectado'**
+  String providerConnected(String provider);
+
+  /// No description provided for @providerDisconnected.
+  ///
+  /// In es, this message translates to:
+  /// **'{provider} desconectado'**
+  String providerDisconnected(String provider);
+
+  /// No description provided for @signingIn.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrando...'**
+  String get signingIn;
+
+  /// No description provided for @authMethodsLoadError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los métodos de acceso.'**
+  String get authMethodsLoadError;
+
+  /// No description provided for @errTooManyRequests.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos. Espera un momento y vuelve a intentarlo.'**
+  String get errTooManyRequests;
 }
 
 class _AppLocalizationsDelegate

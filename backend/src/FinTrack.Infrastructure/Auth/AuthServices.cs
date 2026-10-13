@@ -46,7 +46,22 @@ public class BcryptPasswordHasher : IPasswordHasher
 {
     public string Hash(string password) => BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12);
 
-    public bool Verify(string password, string hash) => BCrypt.Net.BCrypt.Verify(password, hash);
+    public bool Verify(string password, string hash)
+    {
+        if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(hash) || !hash.StartsWith("$2", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        try
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hash);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }
 
 public class DateTimeProvider : IDateTimeProvider

@@ -10,6 +10,7 @@ import 'package:fintrack/features/auth/presentation/biometric_screen.dart';
 import 'package:fintrack/features/auth/presentation/onboarding_screen.dart';
 import 'package:fintrack/features/auth/presentation/splash_screen.dart';
 import 'package:fintrack/routing/auth_redirect.dart';
+import 'package:fintrack/routing/return_path.dart';
 import 'package:fintrack/routing/session_gate.dart';
 import 'package:fintrack/features/budgets/presentation/budgets_screen.dart';
 import 'package:fintrack/features/dashboard/presentation/app_shell.dart';
@@ -31,12 +32,30 @@ final routerProvider = Provider<GoRouter>((ref) {
               .read(sharedPreferencesProvider)
               .getBool(StorageKeys.onboardingComplete) ??
           false;
-      return resolveAppRedirect(
-        status: authGateStatus(ref.read(authControllerProvider)),
+      final status = authGateStatus(ref.read(authControllerProvider));
+      final location = state.matchedLocation;
+      final full = state.uri.hasQuery
+          ? '$location?${state.uri.query}'
+          : location;
+      if (status == AuthGateStatus.signedOut &&
+          !unauthenticatedEntryRoutes.contains(location)) {
+        ref.read(returnPathProvider.notifier).remember(full);
+      }
+      final stored = ref.read(returnPathProvider);
+      final target = resolveAppRedirect(
+        status: status,
         onboardingComplete: onboarding,
-        location: state.matchedLocation,
+        location: location,
         biometricLock: ref.read(biometricLockProvider),
+        returnPath: stored,
       );
+      if (target == null &&
+          status == AuthGateStatus.signedIn &&
+          stored != null &&
+          sanitizeReturnPath(stored)?.split('?').first == location) {
+        ref.read(returnPathProvider.notifier).clear();
+      }
+      return target;
     },
     routes: [
       GoRoute(
