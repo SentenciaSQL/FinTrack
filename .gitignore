@@ -5,6 +5,7 @@ backend/**/logs/
 *.user
 *.suo
 .vs/
+./.vscode/
 
 ## Flutter
 mobile/.dart_tool/
