@@ -11,8 +11,8 @@
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SSO_GOOGLE_ENABLED": "true",
-        "GOOGLE_CLIENT_ID": "715392016487-ee6puekjnli20mi7kpnhkogof038mn89.apps.googleusercontent.com",
-        "GOOGLE_CLIENT_SECRET": "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",
+        "GOOGLE_CLIENT_ID": "${env:GOOGLE_CLIENT_ID}",
+        "GOOGLE_CLIENT_SECRET": "${env:GOOGLE_CLIENT_SECRET}",
         "OIDC_REDIRECT_URI": "http://localhost:8080/api/auth/sso/callback",
         "SSO_MICROSOFT_ENABLED": "false",
         "MICROSOFT_CLIENT_ID": "",
