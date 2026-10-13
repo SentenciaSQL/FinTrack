@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:fintrack/core/constants/storage_keys.dart';
+import 'package:fintrack/features/auth/data/sso_browser.dart';
 import 'package:fintrack/core/localization/locale_provider.dart';
 import 'package:fintrack/core/errors/api_exception.dart';
 import 'package:fintrack/core/models/models.dart';
@@ -159,10 +159,7 @@ class AuthRepository {
           state.isEmpty) {
         throw ApiException(message: '', code: 'SSO_INVALID');
       }
-      final callback = await FlutterWebAuth2.authenticate(
-        url: authorizationUrl,
-        callbackUrlScheme: 'fintrack',
-      );
+      final callback = await openSsoBrowser(authorizationUrl);
       final parsed = Uri.parse(callback);
       final callbackError = parsed.queryParameters['error'];
       if (callbackError != null && callbackError.isNotEmpty) {
@@ -442,10 +439,7 @@ class AuthController extends AsyncNotifier<AuthSession> {
     ref.read(biometricLockProvider.notifier).lock();
     if (endSession != null) {
       try {
-        await FlutterWebAuth2.authenticate(
-          url: endSession,
-          callbackUrlScheme: 'fintrack',
-        );
+        await openSsoBrowser(endSession);
       } catch (_) {
         // Local sign-out already succeeded. Closing the provider page is enough.
       }
@@ -604,10 +598,34 @@ class SsoFlowState {
 }
 
 class SsoFlow extends Notifier<SsoFlowState> {
+  Future<SsoCompletion>? _inFlight;
+
   @override
   SsoFlowState build() => const SsoFlowState();
 
-  Future<SsoCompletion> start({
+  Future<SsoCompletion?> start({
+    required String provider,
+    required String intent,
+    String? returnPath,
+  }) {
+    final current = _inFlight;
+    if (current != null) {
+      return Future.value(null);
+    }
+    final run = _start(
+      provider: provider,
+      intent: intent,
+      returnPath: returnPath,
+    );
+    _inFlight = run;
+    return run.whenComplete(() {
+      if (identical(_inFlight, run)) {
+        _inFlight = null;
+      }
+    });
+  }
+
+  Future<SsoCompletion> _start({
     required String provider,
     required String intent,
     String? returnPath,

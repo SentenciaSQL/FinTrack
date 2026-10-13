@@ -64,7 +64,7 @@ Production must set `ASPNETCORE_ENVIRONMENT=Production` and an `https://` redire
 3. Create an OAuth client of type **Web application**. The API holds the client secret, so this is a web client even though the user is in the mobile app.
 4. Add this authorized redirect URI, exactly:
    - Local: `http://localhost:8080/api/auth/sso/callback`
-   - Production: `https://<your-api-host>/api/auth/sso/callback`
+   - Production: `https://fintrack-production-3807.up.railway.app/api/auth/sso/callback`
 5. Copy the client id and client secret into the environment. Do not put them in the Flutter app or in a committed file.
 6. Set `SSO_GOOGLE_ENABLED=true`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `OIDC_REDIRECT_URI`.
 7. Restart the API. The log line `SSO providers ready` should include `google`, and the login screen should show **Continue with Google**.
