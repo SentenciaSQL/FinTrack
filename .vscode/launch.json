@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FinTrack API",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/backend/src/FinTrack.Api/bin/Debug/net8.0/FinTrack.Api.dll",
+      "cwd": "${workspaceFolder}/backend/src/FinTrack.Api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SSO_GOOGLE_ENABLED": "true",
+        "GOOGLE_CLIENT_ID": "715392016487-ee6puekjnli20mi7kpnhkogof038mn89.apps.googleusercontent.com",
+        "GOOGLE_CLIENT_SECRET": "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",
+        "OIDC_REDIRECT_URI": "http://localhost:8080/api/auth/sso/callback",
+        "SSO_MICROSOFT_ENABLED": "false",
+        "MICROSOFT_CLIENT_ID": "",
+        "MICROSOFT_CLIENT_SECRET": "",
+        "MICROSOFT_TENANT_ID": "common",
+        "SSO_APP_CALLBACK_URI": "fintrack://sso/callback",
+        "SSO_ALLOW_REGISTRATION": "true"
+      }
+    }
+  ]
+}
