@@ -294,7 +294,7 @@ API base URL is centralized in `lib/core/constants/app_config.dart`:
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Android emulator     | `http://10.0.2.2:8080/api` (default)                                                                                                                                           |
 | iOS simulator        | `http://localhost:8080/api`                                                                                                                                                    |
-| Physical device      | `http://IP_LOCAL_PC:8080/api` via `--dart-define=API_BASE_URL=...`                                                                                                             |
+| Physical Android     | `http://127.0.0.1:8080/api` after `adb reverse tcp:8080 tcp:8080`. Wi-Fi API calls can use `--dart-define=API_BASE_URL=http://IP_LOCAL_PC:8080/api`; Google's browser redirect still needs the reverse. |
 | Staging / production | `--dart-define=FLAVOR=staging` or `production` or `flutter run --dart-define=FLAVOR=production --dart-define=API_BASE_URL=https://fintrack-production-3807.up.railway.app/api` |
 
 Physical device example:

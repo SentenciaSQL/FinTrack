@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fintrack/app.dart';
+import 'package:fintrack/core/constants/app_config.dart';
 import 'package:fintrack/core/notifications/notification_service.dart';
 import 'package:fintrack/core/storage/prefs_storage.dart';
 import 'package:fintrack/l10n/app_localizations.dart';
@@ -10,6 +11,7 @@ import 'package:fintrack/l10n/app_localizations.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
+  await AppConfig.prepareDevelopmentHost();
 
   final prefs = await SharedPreferences.getInstance();
   final container = ProviderContainer(
