@@ -824,6 +824,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ssoDisabled => 'Ese método de acceso no está disponible.';
 
   @override
+  String get ssoHostUnreachable =>
+      'Este teléfono no alcanza el servidor de tu computadora, así que Continuar con Google no aparece. Conéctalo por USB, ejecuta adb reverse tcp:8080 tcp:8080 y pulsa Reintentar.';
+
+  @override
   String get passwordNotSet =>
       'Esta cuenta todavía no tiene contraseña. Crea una aquí o usa un proveedor conectado.';
 

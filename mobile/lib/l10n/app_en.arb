@@ -288,6 +288,7 @@
   "ssoLinkUnavailable": "An account already exists for that email. Sign in with the method you already use, then connect this provider from Profile.",
   "ssoInvalid": "Sign-in could not be completed. Try again.",
   "ssoDisabled": "That sign-in method is not available.",
+  "ssoHostUnreachable": "This phone cannot reach the server on your computer, so Continue with Google stays hidden. Connect it by USB, run adb reverse tcp:8080 tcp:8080, then tap Try again.",
   "passwordNotSet": "This account has no password yet. Set one here, or use a connected provider.",
   "passwordAlreadySet": "This account already has a password. Use Change password.",
   "linkAccountTitle": "Link your account",

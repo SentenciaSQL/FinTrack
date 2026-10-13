@@ -71,13 +71,23 @@ Production must set `ASPNETCORE_ENVIRONMENT=Production` and an `https://` redire
 
 Google's discovery document usually has no end-session endpoint. Signing out of FinTrack clears the FinTrack JWT. It does not always end the Google browser session.
 
-On an Android emulator, the browser must be able to open the redirect URI. `localhost` on the emulator is the emulator itself. From the host, run:
+On an Android emulator the app calls `http://10.0.2.2:8080/api`. That address does not exist on a physical phone, so the Google button stays hidden there until the phone can reach the same API.
+
+Connect the phone with USB debugging and run this once per connection:
 
 ```bash
 adb reverse tcp:8080 tcp:8080
 ```
 
-Then register and use `http://localhost:8080/api/auth/sso/callback`. A physical device needs a host the phone can reach, normally the public HTTPS URL.
+Then run the app again. A physical phone uses `http://127.0.0.1:8080/api`, and the reverse makes both that address and the Google redirect `http://localhost:8080/api/auth/sso/callback` reach the API on your computer. The same `adb reverse` command is also required on the emulator, because the sign-in browser opens `localhost`, not `10.0.2.2`.
+
+Over Wi-Fi, pass the computer's address for API calls:
+
+```bash
+flutter run --dart-define=API_BASE_URL=http://192.168.1.20:8080/api
+```
+
+Google still redirects the browser to `localhost`. Keep `adb reverse` active, or the button can appear and the sign-in still fails when the browser cannot return to the API.
 
 ## Microsoft Entra ID
 

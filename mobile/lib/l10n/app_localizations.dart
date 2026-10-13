@@ -1646,6 +1646,12 @@ abstract class AppLocalizations {
   /// **'Ese método de acceso no está disponible.'**
   String get ssoDisabled;
 
+  /// No description provided for @ssoHostUnreachable.
+  ///
+  /// In es, this message translates to:
+  /// **'Este teléfono no alcanza el servidor de tu computadora, así que Continuar con Google no aparece. Conéctalo por USB, ejecuta adb reverse tcp:8080 tcp:8080 y pulsa Reintentar.'**
+  String get ssoHostUnreachable;
+
   /// No description provided for @passwordNotSet.
   ///
   /// In es, this message translates to:

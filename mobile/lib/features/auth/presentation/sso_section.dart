@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fintrack/core/errors/error_mapper.dart';
+import 'package:fintrack/core/network/dio_provider.dart';
 import 'package:fintrack/core/extensions/context_extensions.dart';
 import 'package:fintrack/features/auth/data/auth_repository.dart';
 import 'package:fintrack/l10n/app_localizations.dart';
@@ -20,7 +21,28 @@ class SsoSignInSection extends ConsumerWidget {
         padding: EdgeInsets.only(bottom: 20),
         child: LinearProgressIndicator(),
       ),
-      error: (_, _) => const SizedBox.shrink(),
+      error: (error, _) {
+        final l10n = context.l10n;
+        final message = toApiException(error).code == 'NETWORK_ERROR'
+            ? l10n.ssoHostUnreachable
+            : mapErrorCode(l10n, error);
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(message),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: () => ref.invalidate(ssoProvidersProvider),
+                  child: Text(l10n.retry),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
       data: (items) {
         if (items.isEmpty) {
           return const SizedBox.shrink();

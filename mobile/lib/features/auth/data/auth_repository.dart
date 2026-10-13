@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fintrack/core/constants/app_config.dart';
 import 'package:fintrack/core/constants/storage_keys.dart';
 import 'package:fintrack/features/auth/data/sso_browser.dart';
 import 'package:fintrack/core/localization/locale_provider.dart';
@@ -114,18 +115,50 @@ class AuthRepository {
   }
 
   Future<List<SsoProvider>> ssoProviders() async {
-    try {
-      final response = await _dio.get<List<dynamic>>(
-        '/auth/sso/providers',
-        options: Options(extra: const {'skipAuth': true}),
-      );
-      return (response.data ?? const [])
-          .whereType<Map<String, dynamic>>()
-          .map(SsoProvider.fromJson)
-          .toList();
-    } catch (error) {
-      throw toApiException(error);
+    final candidates = AppConfig.developmentApiCandidates(_dio.options.baseUrl);
+    Object? lastError;
+    for (var index = 0; index < candidates.length; index++) {
+      final base = candidates[index];
+      try {
+        final providers = await _readSsoProviders(
+          base,
+          shortTimeout: index > 0,
+        );
+        if (_dio.options.baseUrl != base) {
+          _dio.options.baseUrl = base;
+        }
+        return providers;
+      } catch (error) {
+        lastError = error;
+        final unreachable = toApiException(error).code == 'NETWORK_ERROR';
+        if (!unreachable || index == candidates.length - 1) {
+          throw toApiException(error);
+        }
+      }
     }
+    throw toApiException(
+      lastError ?? ApiException(message: '', code: 'NETWORK_ERROR'),
+    );
+  }
+
+  Future<List<SsoProvider>> _readSsoProviders(
+    String base, {
+    required bool shortTimeout,
+  }) async {
+    final timeout = shortTimeout ? const Duration(seconds: 3) : null;
+    final response = await _dio.get<List<dynamic>>(
+      '$base/auth/sso/providers',
+      options: Options(
+        extra: const {'skipAuth': true},
+        connectTimeout: timeout,
+        receiveTimeout: timeout,
+        sendTimeout: timeout,
+      ),
+    );
+    return (response.data ?? const [])
+        .whereType<Map<String, dynamic>>()
+        .map(SsoProvider.fromJson)
+        .toList();
   }
 
   Future<SsoCompletion> signInWithProvider({

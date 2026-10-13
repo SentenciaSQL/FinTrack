@@ -821,6 +821,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ssoDisabled => 'That sign-in method is not available.';
 
   @override
+  String get ssoHostUnreachable =>
+      'This phone cannot reach the server on your computer, so Continue with Google stays hidden. Connect it by USB, run adb reverse tcp:8080 tcp:8080, then tap Try again.';
+
+  @override
   String get passwordNotSet =>
       'This account has no password yet. Set one here, or use a connected provider.';
 

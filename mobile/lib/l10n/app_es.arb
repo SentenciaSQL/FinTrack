@@ -293,6 +293,7 @@
   "ssoLinkUnavailable": "Ya existe una cuenta con ese correo. Entra con el método que ya usas y conecta este proveedor desde Perfil.",
   "ssoInvalid": "No se pudo completar el inicio de sesión. Inténtalo de nuevo.",
   "ssoDisabled": "Ese método de acceso no está disponible.",
+  "ssoHostUnreachable": "Este teléfono no alcanza el servidor de tu computadora, así que Continuar con Google no aparece. Conéctalo por USB, ejecuta adb reverse tcp:8080 tcp:8080 y pulsa Reintentar.",
   "passwordNotSet": "Esta cuenta todavía no tiene contraseña. Crea una aquí o usa un proveedor conectado.",
   "passwordAlreadySet": "Esta cuenta ya tiene contraseña. Usa Cambiar contraseña.",
   "linkAccountTitle": "Vincula tu cuenta",
