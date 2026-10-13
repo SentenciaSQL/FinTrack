@@ -120,3 +120,48 @@ public class RecurringExecutionConfiguration : IEntityTypeConfiguration<Recurrin
         builder.HasIndex(x => new { x.RecurringTransactionId, x.ExecutionDate }).IsUnique();
     }
 }
+
+public class ExternalLoginConfiguration : IEntityTypeConfiguration<ExternalLogin>
+{
+    public void Configure(EntityTypeBuilder<ExternalLogin> builder)
+    {
+        builder.ToTable("external_logins");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Provider).HasMaxLength(32).IsRequired();
+        builder.Property(x => x.Issuer).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Subject).HasMaxLength(450).IsRequired();
+        builder.Property(x => x.Email).HasMaxLength(256);
+        builder.HasOne(x => x.User).WithMany(x => x.ExternalLogins).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(x => new { x.Issuer, x.Subject }).IsUnique();
+        builder.HasIndex(x => new { x.UserId, x.Provider }).IsUnique();
+    }
+}
+
+public class SsoChallengeConfiguration : IEntityTypeConfiguration<SsoChallenge>
+{
+    public void Configure(EntityTypeBuilder<SsoChallenge> builder)
+    {
+        builder.ToTable("sso_challenges");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.StateHash).HasMaxLength(64).IsRequired();
+        builder.Property(x => x.Nonce).HasMaxLength(128).IsRequired();
+        builder.Property(x => x.CodeVerifier).HasMaxLength(128).IsRequired();
+        builder.Property(x => x.Provider).HasMaxLength(32).IsRequired();
+        builder.Property(x => x.Intent).HasMaxLength(16).IsRequired();
+        builder.Property(x => x.ReturnPath).HasMaxLength(200);
+        builder.Property(x => x.PreferredLanguage).HasMaxLength(8).IsRequired();
+        builder.Property(x => x.PreferredCurrency).HasMaxLength(8).IsRequired();
+        builder.Property(x => x.ExchangeCodeHash).HasMaxLength(64);
+        builder.Property(x => x.LinkTokenHash).HasMaxLength(64);
+        builder.Property(x => x.Outcome).HasMaxLength(32).IsRequired();
+        builder.Property(x => x.ErrorCode).HasMaxLength(64);
+        builder.Property(x => x.Issuer).HasMaxLength(500);
+        builder.Property(x => x.Subject).HasMaxLength(450);
+        builder.Property(x => x.Email).HasMaxLength(256);
+        builder.Property(x => x.DisplayName).HasMaxLength(120);
+        builder.HasIndex(x => x.StateHash).IsUnique();
+        builder.HasIndex(x => x.ExchangeCodeHash).IsUnique();
+        builder.HasIndex(x => x.LinkTokenHash).IsUnique();
+        builder.HasIndex(x => x.ExpiresAt);
+    }
+}

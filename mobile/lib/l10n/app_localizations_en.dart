@@ -758,4 +758,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hidePassword => 'Hide password';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get continueWithMicrosoft => 'Continue with Microsoft';
+
+  @override
+  String continueWithProvider(String provider) {
+    return 'Continue with $provider';
+  }
+
+  @override
+  String get orDivider => 'or';
+
+  @override
+  String get ssoCancelled => 'Sign-in was canceled.';
+
+  @override
+  String get ssoExpired => 'That sign-in attempt expired. Try again.';
+
+  @override
+  String get ssoProviderError =>
+      'The identity provider could not complete sign-in. Try again.';
+
+  @override
+  String get ssoEmailUnverified =>
+      'That provider did not confirm the email address. Verify it there, or sign in with your password and connect the provider from Profile.';
+
+  @override
+  String get ssoEmailRequired =>
+      'The identity provider did not share an email address.';
+
+  @override
+  String get ssoRegistrationDisabled =>
+      'New accounts are turned off. Sign in with an existing account, then connect this provider from Profile.';
+
+  @override
+  String get ssoIdentityInUse =>
+      'That sign-in is already linked to another FinTrack account.';
+
+  @override
+  String get ssoAlreadyLinked => 'That provider is already connected.';
+
+  @override
+  String get ssoProviderAlreadyLinked =>
+      'This account already has that provider connected.';
+
+  @override
+  String get ssoLastMethod =>
+      'Keep a password or another sign-in method before disconnecting this one.';
+
+  @override
+  String get ssoLinkUnavailable =>
+      'An account already exists for that email. Sign in with the method you already use, then connect this provider from Profile.';
+
+  @override
+  String get ssoInvalid => 'Sign-in could not be completed. Try again.';
+
+  @override
+  String get ssoDisabled => 'That sign-in method is not available.';
+
+  @override
+  String get passwordNotSet =>
+      'This account has no password yet. Set one here, or use a connected provider.';
+
+  @override
+  String get passwordAlreadySet =>
+      'This account already has a password. Use Change password.';
+
+  @override
+  String get linkAccountTitle => 'Link your account';
+
+  @override
+  String linkAccountBody(String email, String provider) {
+    return '$email already has a FinTrack account. Enter its password to connect $provider. Your existing finances stay on that account.';
+  }
+
+  @override
+  String get linkAccountAction => 'Link account';
+
+  @override
+  String get signInMethods => 'Sign-in methods';
+
+  @override
+  String get passwordMethod => 'Password';
+
+  @override
+  String get passwordSet => 'Set';
+
+  @override
+  String get passwordMissing => 'Not set';
+
+  @override
+  String get setPassword => 'Set a password';
+
+  @override
+  String get connected => 'Connected';
+
+  @override
+  String get connect => 'Connect';
+
+  @override
+  String get disconnect => 'Disconnect';
+
+  @override
+  String disconnectTitle(String provider) {
+    return 'Disconnect $provider?';
+  }
+
+  @override
+  String disconnectBody(String provider) {
+    return 'You will no longer be able to sign in with $provider.';
+  }
+
+  @override
+  String providerConnected(String provider) {
+    return '$provider connected';
+  }
+
+  @override
+  String providerDisconnected(String provider) {
+    return '$provider disconnected';
+  }
+
+  @override
+  String get signingIn => 'Signing in...';
+
+  @override
+  String get authMethodsLoadError => 'Sign-in methods could not be loaded.';
+
+  @override
+  String get errTooManyRequests =>
+      'Too many attempts. Wait a moment and try again.';
 }

@@ -16,6 +16,19 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>FinTrack</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>app.fintrack.sso</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fintrack</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>FinTrack uses biometrics to unlock the app.</string>
 	<key>NSAppTransportSecurity</key>

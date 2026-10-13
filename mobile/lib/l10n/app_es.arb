@@ -270,5 +270,73 @@
   "biometricNotNow": "Ahora no",
   "biometricFailed": "No se pudo verificar la huella.",
   "showPassword": "Mostrar contraseña",
-  "hidePassword": "Ocultar contraseña"
+  "hidePassword": "Ocultar contraseña",
+  "continueWithGoogle": "Continuar con Google",
+  "continueWithMicrosoft": "Continuar con Microsoft",
+  "continueWithProvider": "Continuar con {provider}",
+  "@continueWithProvider": {
+    "placeholders": {
+      "provider": { "type": "String" }
+    }
+  },
+  "orDivider": "o",
+  "ssoCancelled": "Se canceló el inicio de sesión.",
+  "ssoExpired": "El intento de inicio de sesión expiró. Inténtalo de nuevo.",
+  "ssoProviderError": "El proveedor no pudo completar el inicio de sesión. Inténtalo de nuevo.",
+  "ssoEmailUnverified": "El proveedor no confirmó el correo. Verifícalo allí, o entra con tu contraseña y conecta el proveedor desde Perfil.",
+  "ssoEmailRequired": "El proveedor no compartió un correo electrónico.",
+  "ssoRegistrationDisabled": "El registro de cuentas nuevas está desactivado. Entra con una cuenta existente y conecta el proveedor desde Perfil.",
+  "ssoIdentityInUse": "Ese inicio de sesión ya está vinculado a otra cuenta de FinTrack.",
+  "ssoAlreadyLinked": "Ese proveedor ya está conectado.",
+  "ssoProviderAlreadyLinked": "Esta cuenta ya tiene ese proveedor conectado.",
+  "ssoLastMethod": "Conserva una contraseña u otro método de acceso antes de desconectar este.",
+  "ssoLinkUnavailable": "Ya existe una cuenta con ese correo. Entra con el método que ya usas y conecta este proveedor desde Perfil.",
+  "ssoInvalid": "No se pudo completar el inicio de sesión. Inténtalo de nuevo.",
+  "ssoDisabled": "Ese método de acceso no está disponible.",
+  "passwordNotSet": "Esta cuenta todavía no tiene contraseña. Crea una aquí o usa un proveedor conectado.",
+  "passwordAlreadySet": "Esta cuenta ya tiene contraseña. Usa Cambiar contraseña.",
+  "linkAccountTitle": "Vincula tu cuenta",
+  "linkAccountBody": "{email} ya tiene una cuenta de FinTrack. Escribe su contraseña para conectar {provider}. Tus movimientos y ajustes se conservan.",
+  "@linkAccountBody": {
+    "placeholders": {
+      "email": { "type": "String" },
+      "provider": { "type": "String" }
+    }
+  },
+  "linkAccountAction": "Vincular cuenta",
+  "signInMethods": "Métodos de acceso",
+  "passwordMethod": "Contraseña",
+  "passwordSet": "Configurada",
+  "passwordMissing": "Sin configurar",
+  "setPassword": "Crear contraseña",
+  "connected": "Conectado",
+  "connect": "Conectar",
+  "disconnect": "Desconectar",
+  "disconnectTitle": "¿Desconectar {provider}?",
+  "@disconnectTitle": {
+    "placeholders": {
+      "provider": { "type": "String" }
+    }
+  },
+  "disconnectBody": "Ya no podrás entrar con {provider}.",
+  "@disconnectBody": {
+    "placeholders": {
+      "provider": { "type": "String" }
+    }
+  },
+  "providerConnected": "{provider} conectado",
+  "@providerConnected": {
+    "placeholders": {
+      "provider": { "type": "String" }
+    }
+  },
+  "providerDisconnected": "{provider} desconectado",
+  "@providerDisconnected": {
+    "placeholders": {
+      "provider": { "type": "String" }
+    }
+  },
+  "signingIn": "Entrando...",
+  "authMethodsLoadError": "No se pudieron cargar los métodos de acceso.",
+  "errTooManyRequests": "Demasiados intentos. Espera un momento y vuelve a intentarlo."
 }

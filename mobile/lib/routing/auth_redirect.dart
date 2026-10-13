@@ -1,3 +1,5 @@
+import 'package:fintrack/routing/return_path.dart';
+
 /// Bootstrap state used by the router to decide the next screen.
 enum AuthGateStatus {
   /// Session restore has not finished. Stay on the current route.
@@ -24,6 +26,9 @@ const unauthenticatedEntryRoutes = {
 
 /// Where to send the user, or null to keep [location].
 ///
+/// [returnPath] is an in-app route saved before sign-in. It is used only after
+/// the session is valid, and only when it is a known FinTrack route.
+///
 /// `/splash` is only a waiting screen. Once session restore finishes, staying
 /// there would freeze the app — including after a cold start when the user
 /// comes back and the keystore read fails or returns no token.
@@ -32,6 +37,7 @@ String? resolveAppRedirect({
   required bool onboardingComplete,
   required String location,
   bool biometricLock = false,
+  String? returnPath,
 }) {
   if (status == AuthGateStatus.loading) {
     return null;
@@ -50,7 +56,7 @@ String? resolveAppRedirect({
   }
 
   if (unauthenticatedEntryRoutes.contains(location)) {
-    return '/home';
+    return sanitizeReturnPath(returnPath) ?? '/home';
   }
   return null;
 }

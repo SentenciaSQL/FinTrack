@@ -759,4 +759,141 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get hidePassword => 'Ocultar contraseña';
+
+  @override
+  String get continueWithGoogle => 'Continuar con Google';
+
+  @override
+  String get continueWithMicrosoft => 'Continuar con Microsoft';
+
+  @override
+  String continueWithProvider(String provider) {
+    return 'Continuar con $provider';
+  }
+
+  @override
+  String get orDivider => 'o';
+
+  @override
+  String get ssoCancelled => 'Se canceló el inicio de sesión.';
+
+  @override
+  String get ssoExpired =>
+      'El intento de inicio de sesión expiró. Inténtalo de nuevo.';
+
+  @override
+  String get ssoProviderError =>
+      'El proveedor no pudo completar el inicio de sesión. Inténtalo de nuevo.';
+
+  @override
+  String get ssoEmailUnverified =>
+      'El proveedor no confirmó el correo. Verifícalo allí, o entra con tu contraseña y conecta el proveedor desde Perfil.';
+
+  @override
+  String get ssoEmailRequired =>
+      'El proveedor no compartió un correo electrónico.';
+
+  @override
+  String get ssoRegistrationDisabled =>
+      'El registro de cuentas nuevas está desactivado. Entra con una cuenta existente y conecta el proveedor desde Perfil.';
+
+  @override
+  String get ssoIdentityInUse =>
+      'Ese inicio de sesión ya está vinculado a otra cuenta de FinTrack.';
+
+  @override
+  String get ssoAlreadyLinked => 'Ese proveedor ya está conectado.';
+
+  @override
+  String get ssoProviderAlreadyLinked =>
+      'Esta cuenta ya tiene ese proveedor conectado.';
+
+  @override
+  String get ssoLastMethod =>
+      'Conserva una contraseña u otro método de acceso antes de desconectar este.';
+
+  @override
+  String get ssoLinkUnavailable =>
+      'Ya existe una cuenta con ese correo. Entra con el método que ya usas y conecta este proveedor desde Perfil.';
+
+  @override
+  String get ssoInvalid =>
+      'No se pudo completar el inicio de sesión. Inténtalo de nuevo.';
+
+  @override
+  String get ssoDisabled => 'Ese método de acceso no está disponible.';
+
+  @override
+  String get passwordNotSet =>
+      'Esta cuenta todavía no tiene contraseña. Crea una aquí o usa un proveedor conectado.';
+
+  @override
+  String get passwordAlreadySet =>
+      'Esta cuenta ya tiene contraseña. Usa Cambiar contraseña.';
+
+  @override
+  String get linkAccountTitle => 'Vincula tu cuenta';
+
+  @override
+  String linkAccountBody(String email, String provider) {
+    return '$email ya tiene una cuenta de FinTrack. Escribe su contraseña para conectar $provider. Tus movimientos y ajustes se conservan.';
+  }
+
+  @override
+  String get linkAccountAction => 'Vincular cuenta';
+
+  @override
+  String get signInMethods => 'Métodos de acceso';
+
+  @override
+  String get passwordMethod => 'Contraseña';
+
+  @override
+  String get passwordSet => 'Configurada';
+
+  @override
+  String get passwordMissing => 'Sin configurar';
+
+  @override
+  String get setPassword => 'Crear contraseña';
+
+  @override
+  String get connected => 'Conectado';
+
+  @override
+  String get connect => 'Conectar';
+
+  @override
+  String get disconnect => 'Desconectar';
+
+  @override
+  String disconnectTitle(String provider) {
+    return '¿Desconectar $provider?';
+  }
+
+  @override
+  String disconnectBody(String provider) {
+    return 'Ya no podrás entrar con $provider.';
+  }
+
+  @override
+  String providerConnected(String provider) {
+    return '$provider conectado';
+  }
+
+  @override
+  String providerDisconnected(String provider) {
+    return '$provider desconectado';
+  }
+
+  @override
+  String get signingIn => 'Entrando...';
+
+  @override
+  String get authMethodsLoadError =>
+      'No se pudieron cargar los métodos de acceso.';
+
+  @override
+  String get errTooManyRequests =>
+      'Demasiados intentos. Espera un momento y vuelve a intentarlo.';
 }

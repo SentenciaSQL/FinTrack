@@ -23,6 +23,10 @@ final dioProvider = Provider<Dio>((ref) {
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
+        if (options.extra['skipAuth'] == true) {
+          handler.next(options);
+          return;
+        }
         final token = await ref.read(secureStorageProvider).read(key: StorageKeys.accessToken);
         if (token != null && token.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $token';
@@ -107,7 +111,10 @@ DioException _mapDioError(DioException error) {
 
 bool _isCredentialRequest(RequestOptions options) {
   final path = options.uri.path;
-  return path.endsWith('/auth/login') || path.endsWith('/auth/register');
+  return path.endsWith('/auth/login') ||
+      path.endsWith('/auth/register') ||
+      path.endsWith('/auth/sso/exchange') ||
+      path.endsWith('/auth/sso/link');
 }
 
 bool _isTransportError(DioException error) {

@@ -34,6 +34,22 @@ services:
       Jwt__Issuer: ${JWT_ISSUER:-FinTrack}
       Jwt__Audience: ${JWT_AUDIENCE:-FinTrackMobile}
       Jwt__ExpirationMinutes: ${JWT_EXPIRATION_MINUTES:-1440}
+      Sso__AllowRegistration: ${SSO_ALLOW_REGISTRATION:-true}
+      Sso__RedirectUri: ${OIDC_REDIRECT_URI:-http://localhost:8080/api/auth/sso/callback}
+      Sso__AppCallbackUri: ${SSO_APP_CALLBACK_URI:-fintrack://sso/callback}
+      Sso__PostLogoutRedirectUri: ${SSO_POST_LOGOUT_REDIRECT_URI:-fintrack://sso/logout}
+      Sso__Google__Enabled: ${SSO_GOOGLE_ENABLED:-false}
+      Sso__Google__ClientId: ${GOOGLE_CLIENT_ID:-}
+      Sso__Google__ClientSecret: ${GOOGLE_CLIENT_SECRET:-}
+      Sso__Microsoft__Enabled: ${SSO_MICROSOFT_ENABLED:-false}
+      Sso__Microsoft__ClientId: ${MICROSOFT_CLIENT_ID:-}
+      Sso__Microsoft__ClientSecret: ${MICROSOFT_CLIENT_SECRET:-}
+      Sso__Microsoft__TenantId: ${MICROSOFT_TENANT_ID:-common}
+      Sso__Oidc__Enabled: ${SSO_OIDC_ENABLED:-false}
+      Sso__Oidc__ClientId: ${OIDC_CLIENT_ID:-}
+      Sso__Oidc__ClientSecret: ${OIDC_CLIENT_SECRET:-}
+      Sso__Oidc__Issuer: ${OIDC_ISSUER_URI:-}
+      Sso__Oidc__DisplayName: ${OIDC_DISPLAY_NAME:-Single sign-on}
     ports:
       - "8080:8080"
 

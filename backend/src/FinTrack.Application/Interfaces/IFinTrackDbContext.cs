@@ -13,6 +13,11 @@ public interface IFinTrackDbContext
     DbSet<SavingsContribution> SavingsContributions { get; }
     DbSet<RecurringTransaction> RecurringTransactions { get; }
     DbSet<RecurringExecution> RecurringExecutions { get; }
+    DbSet<ExternalLogin> ExternalLogins { get; }
+    DbSet<SsoChallenge> SsoChallenges { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    void DetachAll();
+    Task<int> DeleteExpiredChallengesAsync(DateTime utcNow, CancellationToken cancellationToken = default);
+    Task<int> ClaimChallengeAsync(Guid challengeId, DateTime utcNow, CancellationToken cancellationToken = default);
 }

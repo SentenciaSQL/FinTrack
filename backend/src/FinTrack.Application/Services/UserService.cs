@@ -16,6 +16,7 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly IValidator<UpdateProfileRequest> _updateValidator;
     private readonly IValidator<ChangePasswordRequest> _passwordValidator;
+    private readonly IValidator<SetInitialPasswordRequest> _setPasswordValidator;
 
     public UserService(
         IFinTrackDbContext db,
@@ -24,7 +25,8 @@ public class UserService : IUserService
         IDateTimeProvider clock,
         IMapper mapper,
         IValidator<UpdateProfileRequest> updateValidator,
-        IValidator<ChangePasswordRequest> passwordValidator)
+        IValidator<ChangePasswordRequest> passwordValidator,
+        IValidator<SetInitialPasswordRequest> setPasswordValidator)
     {
         _db = db;
         _currentUser = currentUser;
@@ -33,6 +35,7 @@ public class UserService : IUserService
         _mapper = mapper;
         _updateValidator = updateValidator;
         _passwordValidator = passwordValidator;
+        _setPasswordValidator = setPasswordValidator;
     }
 
     public async Task<UserProfileDto> GetCurrentAsync(CancellationToken cancellationToken = default)
@@ -65,9 +68,28 @@ public class UserService : IUserService
     {
         await _passwordValidator.ValidateAndThrowAppAsync(request, cancellationToken);
         var user = await GetUserAsync(cancellationToken);
+        if (!PasswordHashes.IsSet(user.PasswordHash))
+        {
+            throw new ValidationAppException(ErrorCodes.PasswordNotSet, "This account does not have a password yet");
+        }
+
         if (!_passwordHasher.Verify(request.CurrentPassword, user.PasswordHash))
         {
             throw new ValidationAppException(ErrorCodes.CurrentPasswordIncorrect, "Current password is incorrect");
+        }
+
+        user.PasswordHash = _passwordHasher.Hash(request.NewPassword);
+        user.UpdatedAt = _clock.UtcNow;
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SetInitialPasswordAsync(SetInitialPasswordRequest request, CancellationToken cancellationToken = default)
+    {
+        await _setPasswordValidator.ValidateAndThrowAppAsync(request, cancellationToken);
+        var user = await GetUserAsync(cancellationToken);
+        if (PasswordHashes.IsSet(user.PasswordHash))
+        {
+            throw new ConflictException(ErrorCodes.PasswordAlreadySet, "A password is already set");
         }
 
         user.PasswordHash = _passwordHasher.Hash(request.NewPassword);

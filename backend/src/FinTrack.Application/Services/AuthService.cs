@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using FinTrack.Application.Common;
 using FinTrack.Application.DTOs.Auth;
 using FinTrack.Application.Interfaces;
-using FinTrack.Domain.Common;
 using FinTrack.Domain.Entities;
 
 namespace FinTrack.Application.Services;
@@ -49,33 +48,14 @@ public class AuthService : IAuthService
         }
 
         var now = _clock.UtcNow;
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = request.Name.Trim(),
-            Email = email,
-            PasswordHash = _passwordHasher.Hash(request.Password),
-            PreferredLanguage = string.IsNullOrWhiteSpace(request.PreferredLanguage) ? "es" : request.PreferredLanguage,
-            PreferredCurrency = string.IsNullOrWhiteSpace(request.PreferredCurrency) ? "DOP" : request.PreferredCurrency,
-            CreatedAt = now,
-            UpdatedAt = now
-        };
-
-        _db.Users.Add(user);
-
-        foreach (var (code, type, icon) in DefaultCategories.All)
-        {
-            _db.Categories.Add(new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = code,
-                Icon = icon,
-                Type = type,
-                UserId = user.Id,
-                IsDefault = true,
-                CreatedAt = now
-            });
-        }
+        var user = UserRegistration.CreateAccount(
+            _db,
+            request.Name.Trim(),
+            email,
+            _passwordHasher.Hash(request.Password),
+            string.IsNullOrWhiteSpace(request.PreferredLanguage) ? "es" : request.PreferredLanguage,
+            string.IsNullOrWhiteSpace(request.PreferredCurrency) ? "DOP" : request.PreferredCurrency,
+            now);
 
         await _db.SaveChangesAsync(cancellationToken);
         return CreateAuthResponse(user);
@@ -87,7 +67,7 @@ public class AuthService : IAuthService
 
         var email = request.Email.Trim().ToLowerInvariant();
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
-        if (user is null || !_passwordHasher.Verify(request.Password, user.PasswordHash))
+        if (user is null || !PasswordHashes.IsSet(user.PasswordHash) || !_passwordHasher.Verify(request.Password, user.PasswordHash))
         {
             throw new UnauthorizedException("Invalid email or password");
         }
