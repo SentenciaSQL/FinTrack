@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -48,6 +49,7 @@ class NotificationService {
     required List<Budget> budgets,
     required List<SavingsGoal> goals,
     required List<RecurringTransaction> recurring,
+    List<Loan> loans = const [],
   }) async {
     if (!_ready) {
       return;
@@ -72,6 +74,40 @@ class NotificationService {
     final soon = DateTime.now().add(const Duration(days: 3));
     for (final item in recurring.where((e) => e.active && e.nextExecutionDate.isBefore(soon))) {
       await _show(id++, l10n.recurringSoonTitle, l10n.recurringSoonBody(item.description));
+    }
+
+    final today = DateTime.now();
+    for (final loan in loans.where((l) => l.status == 'ACTIVE' && l.nextPaymentDate != null)) {
+      final due = loan.nextPaymentDate!.toLocal();
+      final days = DateTime(due.year, due.month, due.day)
+          .difference(DateTime(today.year, today.month, today.day))
+          .inDays;
+      final reminderDays = loan.reminderDays.isEmpty ? const [7, 3, 1, 0] : loan.reminderDays;
+      final overdue = days < 0;
+      final shouldRemind = overdue
+          ? loan.remindOnOverdue
+          : reminderDays.contains(days);
+      if (!shouldRemind) {
+        continue;
+      }
+      final amount = MoneyFormatter.format(
+        loan.periodicPayment,
+        currency: loan.currency,
+        locale: Locale(l10n.localeName),
+      );
+      if (overdue) {
+        await _show(
+          id++,
+          l10n.loanOverdueTitle,
+          l10n.loanOverdueBody(loan.name, amount, due.day.toString().padLeft(2, '0')),
+        );
+      } else {
+        await _show(
+          id++,
+          l10n.loanDueTitle,
+          l10n.loanDueBody(loan.name, amount, days),
+        );
+      }
     }
   }
 

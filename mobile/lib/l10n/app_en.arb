@@ -71,7 +71,7 @@
   "noAccount": "Don't have an account?",
   "hasAccount": "Already have an account?",
   "forgotPassword": "Forgot your password?",
-  "currentBalance": "Current balance",
+  "currentBalance": "Outstanding balance",
   "monthlyIncome": "Monthly income",
   "monthlyExpense": "Monthly expenses",
   "monthlySavings": "Monthly savings",
@@ -204,28 +204,36 @@
   "budgetWarningBody": "You are close to the limit in {category}.",
   "@budgetWarningBody": {
     "placeholders": {
-      "category": { "type": "String" }
+      "category": {
+        "type": "String"
+      }
     }
   },
   "budgetExceededTitle": "Budget exceeded",
   "budgetExceededBody": "You went over the budget for {category}.",
   "@budgetExceededBody": {
     "placeholders": {
-      "category": { "type": "String" }
+      "category": {
+        "type": "String"
+      }
     }
   },
   "goalAlmostTitle": "Goal almost complete",
   "goalAlmostBody": "Your goal {name} is close to completion.",
   "@goalAlmostBody": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "recurringSoonTitle": "Upcoming recurring transaction",
   "recurringSoonBody": "{description} will run soon.",
   "@recurringSoonBody": {
     "placeholders": {
-      "description": { "type": "String" }
+      "description": {
+        "type": "String"
+      }
     }
   },
   "appearance": "Appearance",
@@ -239,13 +247,17 @@
   "percentUsed": "{percent}%",
   "@percentUsed": {
     "placeholders": {
-      "percent": { "type": "String" }
+      "percent": {
+        "type": "String"
+      }
     }
   },
   "welcomeBack": "Hi, {name}",
   "@welcomeBack": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "splashTagline": "Your money, under control.",
@@ -308,5 +320,176 @@
   "providerDisconnected": "{provider} disconnected",
   "signingIn": "Signing in...",
   "authMethodsLoadError": "Sign-in methods could not be loaded.",
-  "errTooManyRequests": "Too many attempts. Wait a moment and try again."
+  "errTooManyRequests": "Too many attempts. Wait a moment and try again.",
+  "loans": "Loans",
+  "loansDashboard": "Loans dashboard",
+  "myLoans": "My loans",
+  "newLoan": "New loan",
+  "editLoan": "Edit loan",
+  "emptyLoans": "No loans yet",
+  "emptyLoansHint": "Register a loan to calculate installments, interest, and due dates.",
+  "loanCalculator": "Loan calculator",
+  "loanCalendar": "Payment calendar",
+  "activeLoans": "Active loans",
+  "totalDebt": "Total debt",
+  "monthlyInstallments": "Monthly installments",
+  "interestSaved": "Interest saved",
+  "debtPaidPercent": "Debt paid: {percent}%",
+  "@debtPaidPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "nextLoanDue": "Next: {name} · {amount} · {date}",
+  "@nextLoanDue": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "debtDistribution": "Debt distribution",
+  "debtEvolution": "Balance evolution",
+  "capitalVsInterest": "Capital vs interest",
+  "loanName": "Loan name",
+  "creditor": "Lender / creditor",
+  "loanType": "Loan type",
+  "loanTypePersonal": "Personal",
+  "loanTypeMortgage": "Mortgage",
+  "loanTypeVehicle": "Vehicle",
+  "loanTypeCommercial": "Commercial",
+  "loanTypeCreditCard": "Credit card",
+  "loanTypeOther": "Other",
+  "originalPrincipal": "Original principal",
+  "annualInterestRate": "Annual rate (%)",
+  "termMonths": "Term (months)",
+  "paymentFrequency": "Payment frequency",
+  "amortizationType": "Amortization type",
+  "amortizationFrench": "Fixed installment (French)",
+  "amortizationGerman": "Fixed principal (German)",
+  "amortizationCustom": "Custom",
+  "customInstallment": "Custom installment",
+  "associatedAccount": "Associated account (label)",
+  "additionalFees": "Fees / charges",
+  "disbursementDate": "Disbursement date",
+  "firstInstallmentDate": "First installment date",
+  "existingLoan": "Existing loan",
+  "existingLoanHint": "Include current balance and remaining installments.",
+  "remainingInstallments": "Remaining installments",
+  "nextPaymentDate": "Next payment date",
+  "defaultPaymentCategory": "Payment category",
+  "earlyPenaltyRate": "Early payment penalty (%)",
+  "earlyPenaltyFixed": "Early payment penalty (fixed)",
+  "previewAmortization": "Preview amortization",
+  "estimatedInstallment": "Estimated installment",
+  "totalInterest": "Total interest",
+  "totalToPay": "Total to pay",
+  "estimatedEnd": "Estimated end date",
+  "estimateDisclaimer": "Estimated results: verify the lender's actual contractual terms.",
+  "completeRequiredFields": "Please complete the required fields.",
+  "summary": "Summary",
+  "amortizationTable": "Amortization",
+  "installments": "Installments",
+  "paymentHistory": "Payment history",
+  "earlyPaymentSimulator": "Simulator",
+  "configuration": "Settings",
+  "balance": "Balance",
+  "capital": "Principal",
+  "interest": "Interest",
+  "installment": "Installment",
+  "remaining": "Remaining",
+  "registerPayment": "Record payment",
+  "noInstallments": "No installments",
+  "noPayments": "No payments",
+  "noPaymentsHint": "Confirmed payments will appear here.",
+  "totalInterestPaidLabel": "Interest paid",
+  "totalPrincipalPaidLabel": "Principal paid",
+  "extraPrincipalPaid": "Extra principal paid",
+  "earlyPaymentSimulatorHint": "Simulate principal prepayments without changing the loan until you confirm.",
+  "reduceTerm": "Reduce term",
+  "reducePayment": "Reduce installment",
+  "extraPaymentAmount": "Extra payment",
+  "simulate": "Simulate",
+  "confirmExtraPayment": "Confirm payment",
+  "extraPaymentConfirmed": "Extra principal payment confirmed.",
+  "compareScenarios": "Compare scenarios",
+  "compareAmountsHint": "Amounts separated by commas (e.g. 25000,50000,100000)",
+  "compare": "Compare",
+  "newBalance": "New balance",
+  "newInstallment": "New installment",
+  "paymentReduction": "Installment reduction",
+  "periodsSaved": "Installments saved",
+  "timeSavedDays": "Days saved",
+  "interestWithoutExtra": "Interest without extra payment",
+  "interestWithExtra": "Interest with extra payment",
+  "netInterestSaved": "Net interest saved",
+  "penalty": "Penalty",
+  "reminders": "Reminders",
+  "sameDay": "Same day",
+  "daysBefore": "{days} days before",
+  "@daysBefore": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindOnOverdue": "Remind while overdue",
+  "remindersSaved": "Reminders saved.",
+  "paymentKind": "Payment kind",
+  "paymentKindRegular": "Regular installment",
+  "paymentKindPartial": "Partial payment",
+  "paymentKindExtra": "Extra principal",
+  "paymentKindPayoff": "Full payoff",
+  "paymentKindFee": "Fee / charge",
+  "installmentPending": "Pending",
+  "installmentDueSoon": "Due soon",
+  "installmentOverdue": "Overdue",
+  "installmentPaid": "Paid",
+  "installmentPartial": "Partially paid",
+  "calculate": "Calculate",
+  "selectedDayPayments": "Payments on selected day",
+  "selectCalendarDay": "Select a date on the calendar.",
+  "noPaymentsOnDay": "No payments on this date.",
+  "upcomingPayments": "Upcoming payments",
+  "noUpcomingPayments": "No upcoming due dates.",
+  "catLoanPayment": "Loan payment",
+  "loanDueTitle": "Loan payment due",
+  "loanDueBody": "{name}: installment {amount}. {days} day(s) left.",
+  "@loanDueBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "loanOverdueTitle": "Loan overdue",
+  "loanOverdueBody": "{name}: installment {amount} overdue (day {day}).",
+  "@loanOverdueBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "day": {
+        "type": "String"
+      }
+    }
+  }
 }

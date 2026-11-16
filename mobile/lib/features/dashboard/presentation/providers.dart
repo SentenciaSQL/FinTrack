@@ -89,3 +89,31 @@ final incomeVsExpensesProvider = FutureProvider.autoDispose<IncomeVsExpenses>((r
 final balanceHistoryProvider = FutureProvider.autoDispose<BalanceHistory>((ref) {
   return ref.watch(financeRepositoryProvider).balanceHistory();
 });
+
+final loansProvider = FutureProvider.autoDispose<List<Loan>>((ref) {
+  return ref.watch(financeRepositoryProvider).loans();
+});
+
+final loanProvider = FutureProvider.autoDispose.family<Loan, String>((ref, id) {
+  return ref.watch(financeRepositoryProvider).loan(id);
+});
+
+final loanDashboardProvider = FutureProvider.autoDispose<LoanDashboard>((ref) {
+  return ref.watch(financeRepositoryProvider).loanDashboard();
+});
+
+final loanInstallmentsProvider = FutureProvider.autoDispose.family<List<LoanInstallment>, String>((ref, id) {
+  return ref.watch(financeRepositoryProvider).loanInstallments(id);
+});
+
+final loanPaymentsProvider = FutureProvider.autoDispose.family<List<LoanPaymentRecord>, String>((ref, id) {
+  return ref.watch(financeRepositoryProvider).loanPayments(id);
+});
+
+final loanCalendarProvider = FutureProvider.autoDispose<List<LoanCalendarItem>>((ref) {
+  final now = DateTime.now();
+  return ref.watch(financeRepositoryProvider).loanCalendar(
+        from: DateTime(now.year, now.month - 1, 1),
+        to: DateTime(now.year, now.month + 2, 0),
+      );
+});

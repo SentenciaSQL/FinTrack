@@ -18,6 +18,10 @@ public class FinTrackDbContext : DbContext, IFinTrackDbContext
     public DbSet<SavingsContribution> SavingsContributions => Set<SavingsContribution>();
     public DbSet<RecurringTransaction> RecurringTransactions => Set<RecurringTransaction>();
     public DbSet<RecurringExecution> RecurringExecutions => Set<RecurringExecution>();
+    public DbSet<Loan> Loans => Set<Loan>();
+    public DbSet<LoanInstallment> LoanInstallments => Set<LoanInstallment>();
+    public DbSet<LoanPayment> LoanPayments => Set<LoanPayment>();
+    public DbSet<LoanChangeLog> LoanChangeLogs => Set<LoanChangeLog>();
     public DbSet<ExternalLogin> ExternalLogins => Set<ExternalLogin>();
     public DbSet<SsoChallenge> SsoChallenges => Set<SsoChallenge>();
 

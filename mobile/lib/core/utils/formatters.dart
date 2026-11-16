@@ -56,6 +56,7 @@ String categoryLabel(AppLocalizations l10n, String name, bool isDefault) {
     'SHOPPING' => l10n.catShopping,
     'SUBSCRIPTIONS' => l10n.catSubscriptions,
     'TRAVEL' => l10n.catTravel,
+    'LOAN_PAYMENT' => l10n.catLoanPayment,
     'SALARY' => l10n.catSalary,
     'FREELANCE' => l10n.catFreelance,
     'BUSINESS' => l10n.catBusiness,
@@ -90,6 +91,49 @@ String transactionTypeLabel(AppLocalizations l10n, String type) {
   return type == 'INCOME' ? l10n.income : l10n.expense;
 }
 
+String loanTypeLabel(AppLocalizations l10n, String type) {
+  return switch (type) {
+    'PERSONAL' => l10n.loanTypePersonal,
+    'MORTGAGE' => l10n.loanTypeMortgage,
+    'VEHICLE' => l10n.loanTypeVehicle,
+    'COMMERCIAL' => l10n.loanTypeCommercial,
+    'CREDIT_CARD' => l10n.loanTypeCreditCard,
+    _ => l10n.loanTypeOther,
+  };
+}
+
+String loanFrequencyLabel(AppLocalizations l10n, String frequency) => frequencyLabel(l10n, frequency);
+
+String amortizationLabel(AppLocalizations l10n, String type) {
+  return switch (type) {
+    'FRENCH' => l10n.amortizationFrench,
+    'GERMAN' => l10n.amortizationGerman,
+    _ => l10n.amortizationCustom,
+  };
+}
+
+String installmentStatusLabel(AppLocalizations l10n, String status) {
+  return switch (status) {
+    'PENDING' => l10n.installmentPending,
+    'DUE_SOON' => l10n.installmentDueSoon,
+    'OVERDUE' => l10n.installmentOverdue,
+    'PAID' => l10n.installmentPaid,
+    'PARTIALLY_PAID' => l10n.installmentPartial,
+    _ => status,
+  };
+}
+
+String paymentKindLabel(AppLocalizations l10n, String kind) {
+  return switch (kind) {
+    'REGULAR' => l10n.paymentKindRegular,
+    'PARTIAL' => l10n.paymentKindPartial,
+    'EXTRA_PRINCIPAL' => l10n.paymentKindExtra,
+    'FULL_PAYOFF' => l10n.paymentKindPayoff,
+    'FEE' => l10n.paymentKindFee,
+    _ => kind,
+  };
+}
+
 IconData categoryIcon(String? icon, String type) {
   return switch (icon) {
     'restaurant' => Icons.restaurant_rounded,
@@ -102,6 +146,7 @@ IconData categoryIcon(String? icon, String type) {
     'shopping_bag' => Icons.shopping_bag_rounded,
     'subscriptions' => Icons.subscriptions_rounded,
     'flight' => Icons.flight_rounded,
+    'account_balance' => Icons.account_balance_rounded,
     'payments' => Icons.payments_rounded,
     'laptop' => Icons.laptop_rounded,
     'storefront' => Icons.storefront_rounded,

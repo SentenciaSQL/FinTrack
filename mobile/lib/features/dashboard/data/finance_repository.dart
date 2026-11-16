@@ -325,4 +325,135 @@ class FinanceRepository {
       throw toApiException(e);
     }
   }
+
+  Future<List<Loan>> loans() async {
+    try {
+      final res = await _dio.get<List<dynamic>>('/loans');
+      return res.data!.map((e) => Loan.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<Loan> loan(String id) async {
+    try {
+      final res = await _dio.get<Map<String, dynamic>>('/loans/$id');
+      return Loan.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<LoanDashboard> loanDashboard() async {
+    try {
+      final res = await _dio.get<Map<String, dynamic>>('/loans/dashboard');
+      return LoanDashboard.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<List<LoanCalendarItem>> loanCalendar({DateTime? from, DateTime? to}) async {
+    try {
+      final res = await _dio.get<List<dynamic>>('/loans/calendar', queryParameters: {
+        if (from != null) 'from': from.toUtc().toIso8601String(),
+        if (to != null) 'to': to.toUtc().toIso8601String(),
+      });
+      return res.data!.map((e) => LoanCalendarItem.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<AmortizationSchedule> calculateLoan(Map<String, dynamic> payload) async {
+    try {
+      final res = await _dio.post<Map<String, dynamic>>('/loans/calculate', data: payload);
+      return AmortizationSchedule.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<Loan> createLoan(Map<String, dynamic> payload) async {
+    try {
+      final res = await _dio.post<Map<String, dynamic>>('/loans', data: payload);
+      return Loan.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<Loan> updateLoan(String id, Map<String, dynamic> payload) async {
+    try {
+      final res = await _dio.put<Map<String, dynamic>>('/loans/$id', data: payload);
+      return Loan.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<void> deleteLoan(String id) async {
+    try {
+      await _dio.delete('/loans/$id');
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<List<LoanInstallment>> loanInstallments(String id) async {
+    try {
+      final res = await _dio.get<List<dynamic>>('/loans/$id/installments');
+      return res.data!.map((e) => LoanInstallment.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<List<LoanPaymentRecord>> loanPayments(String id) async {
+    try {
+      final res = await _dio.get<List<dynamic>>('/loans/$id/payments');
+      return res.data!.map((e) => LoanPaymentRecord.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<LoanPaymentRecord> recordLoanPayment(String id, Map<String, dynamic> payload) async {
+    try {
+      final res = await _dio.post<Map<String, dynamic>>('/loans/$id/payments', data: payload);
+      return LoanPaymentRecord.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<EarlyPaymentScenario> simulateEarlyPayment(String id, Map<String, dynamic> payload) async {
+    try {
+      final res = await _dio.post<Map<String, dynamic>>('/loans/$id/simulate-early-payment', data: payload);
+      return EarlyPaymentScenario.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<List<EarlyPaymentScenario>> compareEarlyPayments(String id, Map<String, dynamic> payload) async {
+    try {
+      final res = await _dio.post<List<dynamic>>('/loans/$id/compare-early-payments', data: payload);
+      return res.data!.map((e) => EarlyPaymentScenario.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
+
+  Future<Loan> updateLoanReminders(String id, {required List<int> reminderDays, required bool remindOnOverdue}) async {
+    try {
+      final res = await _dio.put<Map<String, dynamic>>('/loans/$id/reminders', data: {
+        'reminderDays': reminderDays,
+        'remindOnOverdue': remindOnOverdue,
+      });
+      return Loan.fromJson(res.data!);
+    } catch (e) {
+      throw toApiException(e);
+    }
+  }
 }

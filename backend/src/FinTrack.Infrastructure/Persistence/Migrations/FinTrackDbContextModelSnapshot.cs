@@ -143,6 +143,313 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                     b.ToTable("external_logins", (string)null);
                 });
 
+            modelBuilder.Entity("FinTrack.Domain.Entities.Loan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("AccruedInterestPending")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("AdditionalFees")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("AmortizationType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<decimal>("AnnualInterestRate")
+                        .HasColumnType("numeric(9,4)");
+
+                    b.Property<string>("AssociatedAccountLabel")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Creditor")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<decimal>("CurrentBalance")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("DefaultCategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DisbursementDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("EarlyPaymentPenaltyFixed")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("EarlyPaymentPenaltyRate")
+                        .HasColumnType("numeric(9,4)");
+
+                    b.Property<DateTime>("FirstInstallmentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsEstimate")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LoanType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<DateTime?>("NextPaymentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<decimal>("OriginalPrincipal")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("PaymentFrequency")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<decimal>("PeriodicPayment")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int?>("PreferredPaymentDay")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RemainingInstallments")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("RemindOnOverdue")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ReminderDaysCsv")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("TermMonths")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalExtraPrincipalPaid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalFeesPaid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalInterestPaid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalInterestSaved")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalPenaltiesPaid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("TotalPrincipalPaid")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DefaultCategoryId");
+
+                    b.HasIndex("UserId", "NextPaymentDate");
+
+                    b.HasIndex("UserId", "Status");
+
+                    b.ToTable("loans", (string)null);
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanChangeLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Details")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("LoanId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoanId", "ChangedAt");
+
+                    b.ToTable("loan_change_logs", (string)null);
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanInstallment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("FeeAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("InterestAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LoanId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PaidFees")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("PaidInterest")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("PaidPrincipal")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("PaidTotal")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("PrincipalAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("RemainingBalanceAfter")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoanId", "DueDate");
+
+                    b.HasIndex("LoanId", "Number")
+                        .IsUnique();
+
+                    b.HasIndex("LoanId", "Status");
+
+                    b.ToTable("loan_installments", (string)null);
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanPayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("FeePortion")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("InstallmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("InterestPortion")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<Guid>("LoanId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<decimal>("PenaltyPortion")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("PrincipalPortion")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid?>("TransactionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("InstallmentId");
+
+                    b.HasIndex("TransactionId")
+                        .IsUnique()
+                        .HasFilter("\"TransactionId\" IS NOT NULL");
+
+                    b.HasIndex("LoanId", "Date");
+
+                    b.ToTable("loan_payments", (string)null);
+                });
+
             modelBuilder.Entity("FinTrack.Domain.Entities.RecurringExecution", b =>
                 {
                     b.Property<Guid>("Id")
@@ -562,6 +869,78 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FinTrack.Domain.Entities.Loan", b =>
+                {
+                    b.HasOne("FinTrack.Domain.Entities.Category", "DefaultCategory")
+                        .WithMany()
+                        .HasForeignKey("DefaultCategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("FinTrack.Domain.Entities.User", "User")
+                        .WithMany("Loans")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DefaultCategory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanChangeLog", b =>
+                {
+                    b.HasOne("FinTrack.Domain.Entities.Loan", "Loan")
+                        .WithMany("ChangeLogs")
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Loan");
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanInstallment", b =>
+                {
+                    b.HasOne("FinTrack.Domain.Entities.Loan", "Loan")
+                        .WithMany("Installments")
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Loan");
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanPayment", b =>
+                {
+                    b.HasOne("FinTrack.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("FinTrack.Domain.Entities.LoanInstallment", "Installment")
+                        .WithMany("Payments")
+                        .HasForeignKey("InstallmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("FinTrack.Domain.Entities.Loan", "Loan")
+                        .WithMany("Payments")
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinTrack.Domain.Entities.Transaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Installment");
+
+                    b.Navigation("Loan");
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("FinTrack.Domain.Entities.RecurringExecution", b =>
                 {
                     b.HasOne("FinTrack.Domain.Entities.RecurringTransaction", "RecurringTransaction")
@@ -657,6 +1036,20 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                     b.Navigation("Transactions");
                 });
 
+            modelBuilder.Entity("FinTrack.Domain.Entities.Loan", b =>
+                {
+                    b.Navigation("ChangeLogs");
+
+                    b.Navigation("Installments");
+
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("FinTrack.Domain.Entities.LoanInstallment", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
             modelBuilder.Entity("FinTrack.Domain.Entities.RecurringTransaction", b =>
                 {
                     b.Navigation("Executions");
@@ -676,6 +1069,8 @@ namespace FinTrack.Infrastructure.Persistence.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("ExternalLogins");
+
+                    b.Navigation("Loans");
 
                     b.Navigation("RecurringTransactions");
 
