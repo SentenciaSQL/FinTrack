@@ -134,11 +134,13 @@ class DashboardScreen extends ConsumerWidget {
       final budgets = await ref.read(budgetsProvider.future);
       final goals = await ref.read(goalsProvider.future);
       final recurring = await ref.read(recurringProvider.future);
+      final loans = await ref.read(loansProvider.future);
       await ref.read(notificationServiceProvider).syncAlerts(
             l10n: l10n,
             budgets: budgets,
             goals: goals,
             recurring: recurring,
+            loans: loans,
           );
     });
   }

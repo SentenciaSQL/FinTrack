@@ -121,6 +121,102 @@ public class RecurringExecutionConfiguration : IEntityTypeConfiguration<Recurrin
     }
 }
 
+public class LoanConfiguration : IEntityTypeConfiguration<Loan>
+{
+    public void Configure(EntityTypeBuilder<Loan> builder)
+    {
+        builder.ToTable("loans");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Name).HasMaxLength(120).IsRequired();
+        builder.Property(x => x.Creditor).HasMaxLength(120).IsRequired();
+        builder.Property(x => x.LoanType).HasConversion<string>().HasMaxLength(30).IsRequired();
+        builder.Property(x => x.OriginalPrincipal).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.Currency).HasMaxLength(8).IsRequired();
+        builder.Property(x => x.AnnualInterestRate).HasColumnType("numeric(9,4)").IsRequired();
+        builder.Property(x => x.PaymentFrequency).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(x => x.AmortizationType).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(x => x.AssociatedAccountLabel).HasMaxLength(120);
+        builder.Property(x => x.AdditionalFees).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.Notes).HasMaxLength(1000);
+        builder.Property(x => x.CurrentBalance).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.AccruedInterestPending).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PeriodicPayment).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Property(x => x.EarlyPaymentPenaltyRate).HasColumnType("numeric(9,4)").IsRequired();
+        builder.Property(x => x.EarlyPaymentPenaltyFixed).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.ReminderDaysCsv).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.TotalInterestPaid).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.TotalPrincipalPaid).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.TotalExtraPrincipalPaid).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.TotalInterestSaved).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.TotalFeesPaid).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.TotalPenaltiesPaid).HasColumnType("numeric(18,2)").IsRequired();
+        builder.HasOne(x => x.User).WithMany(x => x.Loans).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.DefaultCategory).WithMany().HasForeignKey(x => x.DefaultCategoryId).OnDelete(DeleteBehavior.SetNull);
+        builder.HasIndex(x => new { x.UserId, x.Status });
+        builder.HasIndex(x => new { x.UserId, x.NextPaymentDate });
+    }
+}
+
+public class LoanInstallmentConfiguration : IEntityTypeConfiguration<LoanInstallment>
+{
+    public void Configure(EntityTypeBuilder<LoanInstallment> builder)
+    {
+        builder.ToTable("loan_installments");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.PrincipalAmount).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.InterestAmount).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.FeeAmount).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.TotalAmount).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PaidPrincipal).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PaidInterest).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PaidFees).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PaidTotal).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.RemainingBalanceAfter).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.Status).HasConversion<string>().HasMaxLength(30).IsRequired();
+        builder.HasOne(x => x.Loan).WithMany(x => x.Installments).HasForeignKey(x => x.LoanId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(x => new { x.LoanId, x.Number }).IsUnique();
+        builder.HasIndex(x => new { x.LoanId, x.DueDate });
+        builder.HasIndex(x => new { x.LoanId, x.Status });
+    }
+}
+
+public class LoanPaymentConfiguration : IEntityTypeConfiguration<LoanPayment>
+{
+    public void Configure(EntityTypeBuilder<LoanPayment> builder)
+    {
+        builder.ToTable("loan_payments");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Kind).HasConversion<string>().HasMaxLength(30).IsRequired();
+        builder.Property(x => x.Amount).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PrincipalPortion).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.InterestPortion).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.FeePortion).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PenaltyPortion).HasColumnType("numeric(18,2)").IsRequired();
+        builder.Property(x => x.PaymentMethod).HasConversion<string>().HasMaxLength(30).IsRequired();
+        builder.Property(x => x.Notes).HasMaxLength(500);
+        builder.HasOne(x => x.Loan).WithMany(x => x.Payments).HasForeignKey(x => x.LoanId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Installment).WithMany(x => x.Payments).HasForeignKey(x => x.InstallmentId).OnDelete(DeleteBehavior.SetNull);
+        builder.HasOne(x => x.Category).WithMany().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.SetNull);
+        builder.HasOne(x => x.Transaction).WithMany().HasForeignKey(x => x.TransactionId).OnDelete(DeleteBehavior.SetNull);
+        builder.HasIndex(x => new { x.LoanId, x.Date });
+        builder.HasIndex(x => x.TransactionId).IsUnique().HasFilter("\"TransactionId\" IS NOT NULL");
+    }
+}
+
+public class LoanChangeLogConfiguration : IEntityTypeConfiguration<LoanChangeLog>
+{
+    public void Configure(EntityTypeBuilder<LoanChangeLog> builder)
+    {
+        builder.ToTable("loan_change_logs");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Description).HasMaxLength(200).IsRequired();
+        builder.Property(x => x.Details).HasMaxLength(1000);
+        builder.HasOne(x => x.Loan).WithMany(x => x.ChangeLogs).HasForeignKey(x => x.LoanId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(x => new { x.LoanId, x.ChangedAt });
+    }
+}
+
 public class ExternalLoginConfiguration : IEntityTypeConfiguration<ExternalLogin>
 {
     public void Configure(EntityTypeBuilder<ExternalLogin> builder)

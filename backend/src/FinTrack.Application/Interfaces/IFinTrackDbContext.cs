@@ -13,6 +13,10 @@ public interface IFinTrackDbContext
     DbSet<SavingsContribution> SavingsContributions { get; }
     DbSet<RecurringTransaction> RecurringTransactions { get; }
     DbSet<RecurringExecution> RecurringExecutions { get; }
+    DbSet<Loan> Loans { get; }
+    DbSet<LoanInstallment> LoanInstallments { get; }
+    DbSet<LoanPayment> LoanPayments { get; }
+    DbSet<LoanChangeLog> LoanChangeLogs { get; }
     DbSet<ExternalLogin> ExternalLogins { get; }
     DbSet<SsoChallenge> SsoChallenges { get; }
 

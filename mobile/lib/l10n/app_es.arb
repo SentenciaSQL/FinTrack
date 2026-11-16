@@ -71,7 +71,7 @@
   "noAccount": "¿No tienes una cuenta?",
   "hasAccount": "¿Ya tienes una cuenta?",
   "forgotPassword": "¿Olvidaste tu contraseña?",
-  "currentBalance": "Balance actual",
+  "currentBalance": "Saldo pendiente",
   "monthlyIncome": "Ingresos del mes",
   "monthlyExpense": "Gastos del mes",
   "monthlySavings": "Ahorro del mes",
@@ -204,28 +204,36 @@
   "budgetWarningBody": "Estás cerca del límite en {category}.",
   "@budgetWarningBody": {
     "placeholders": {
-      "category": { "type": "String" }
+      "category": {
+        "type": "String"
+      }
     }
   },
   "budgetExceededTitle": "Presupuesto excedido",
   "budgetExceededBody": "Superaste el presupuesto de {category}.",
   "@budgetExceededBody": {
     "placeholders": {
-      "category": { "type": "String" }
+      "category": {
+        "type": "String"
+      }
     }
   },
   "goalAlmostTitle": "Meta casi lista",
   "goalAlmostBody": "Tu meta {name} está cerca de completarse.",
   "@goalAlmostBody": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "recurringSoonTitle": "Movimiento recurrente próximo",
   "recurringSoonBody": "{description} se ejecutará pronto.",
   "@recurringSoonBody": {
     "placeholders": {
-      "description": { "type": "String" }
+      "description": {
+        "type": "String"
+      }
     }
   },
   "appearance": "Apariencia",
@@ -239,13 +247,17 @@
   "percentUsed": "{percent}%",
   "@percentUsed": {
     "placeholders": {
-      "percent": { "type": "String" }
+      "percent": {
+        "type": "String"
+      }
     }
   },
   "welcomeBack": "Hola, {name}",
   "@welcomeBack": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "splashTagline": "Tu dinero, bajo control.",
@@ -276,7 +288,9 @@
   "continueWithProvider": "Continuar con {provider}",
   "@continueWithProvider": {
     "placeholders": {
-      "provider": { "type": "String" }
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "orDivider": "o",
@@ -300,8 +314,12 @@
   "linkAccountBody": "{email} ya tiene una cuenta de FinTrack. Escribe su contraseña para conectar {provider}. Tus movimientos y ajustes se conservan.",
   "@linkAccountBody": {
     "placeholders": {
-      "email": { "type": "String" },
-      "provider": { "type": "String" }
+      "email": {
+        "type": "String"
+      },
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "linkAccountAction": "Vincular cuenta",
@@ -316,28 +334,207 @@
   "disconnectTitle": "¿Desconectar {provider}?",
   "@disconnectTitle": {
     "placeholders": {
-      "provider": { "type": "String" }
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "disconnectBody": "Ya no podrás entrar con {provider}.",
   "@disconnectBody": {
     "placeholders": {
-      "provider": { "type": "String" }
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "providerConnected": "{provider} conectado",
   "@providerConnected": {
     "placeholders": {
-      "provider": { "type": "String" }
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "providerDisconnected": "{provider} desconectado",
   "@providerDisconnected": {
     "placeholders": {
-      "provider": { "type": "String" }
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "signingIn": "Entrando...",
   "authMethodsLoadError": "No se pudieron cargar los métodos de acceso.",
-  "errTooManyRequests": "Demasiados intentos. Espera un momento y vuelve a intentarlo."
+  "errTooManyRequests": "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
+  "loans": "Préstamos",
+  "loansDashboard": "Dashboard de préstamos",
+  "myLoans": "Mis préstamos",
+  "newLoan": "Nuevo préstamo",
+  "editLoan": "Editar préstamo",
+  "emptyLoans": "Sin préstamos",
+  "emptyLoansHint": "Registra un préstamo para calcular cuotas, intereses y vencimientos.",
+  "loanCalculator": "Calculadora de préstamos",
+  "loanCalendar": "Calendario de pagos",
+  "activeLoans": "Préstamos activos",
+  "totalDebt": "Deuda total",
+  "monthlyInstallments": "Cuotas mensuales",
+  "interestSaved": "Ahorro en intereses",
+  "debtPaidPercent": "Deuda pagada: {percent}%",
+  "@debtPaidPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "nextLoanDue": "Próximo: {name} · {amount} · {date}",
+  "@nextLoanDue": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "debtDistribution": "Distribución de deuda",
+  "debtEvolution": "Evolución del saldo",
+  "capitalVsInterest": "Capital vs intereses",
+  "loanName": "Nombre del préstamo",
+  "creditor": "Entidad / acreedor",
+  "loanType": "Tipo de préstamo",
+  "loanTypePersonal": "Personal",
+  "loanTypeMortgage": "Hipotecario",
+  "loanTypeVehicle": "Vehicular",
+  "loanTypeCommercial": "Comercial",
+  "loanTypeCreditCard": "Tarjeta de crédito",
+  "loanTypeOther": "Otro",
+  "originalPrincipal": "Monto original",
+  "annualInterestRate": "Tasa anual (%)",
+  "termMonths": "Plazo (meses)",
+  "paymentFrequency": "Frecuencia de pago",
+  "amortizationType": "Tipo de amortización",
+  "amortizationFrench": "Cuota fija (francés)",
+  "amortizationGerman": "Capital fijo (alemán)",
+  "amortizationCustom": "Personalizado",
+  "customInstallment": "Cuota personalizada",
+  "associatedAccount": "Cuenta asociada (etiqueta)",
+  "additionalFees": "Comisiones / cargos",
+  "disbursementDate": "Fecha de desembolso",
+  "firstInstallmentDate": "Fecha de primera cuota",
+  "existingLoan": "Préstamo existente",
+  "existingLoanHint": "Incluye saldo actual y cuotas restantes.",
+  "remainingInstallments": "Cuotas restantes",
+  "nextPaymentDate": "Próxima fecha de pago",
+  "defaultPaymentCategory": "Categoría para pagos",
+  "earlyPenaltyRate": "Penalidad anticipada (%)",
+  "earlyPenaltyFixed": "Penalidad anticipada fija",
+  "previewAmortization": "Vista previa de amortización",
+  "estimatedInstallment": "Cuota estimada",
+  "totalInterest": "Total de intereses",
+  "totalToPay": "Total a pagar",
+  "estimatedEnd": "Fecha estimada de fin",
+  "estimateDisclaimer": "Resultados estimados: verifica las condiciones reales del acreedor.",
+  "completeRequiredFields": "Completa los campos obligatorios.",
+  "summary": "Resumen",
+  "amortizationTable": "Amortización",
+  "installments": "Cuotas",
+  "paymentHistory": "Historial de pagos",
+  "earlyPaymentSimulator": "Simulador",
+  "configuration": "Configuración",
+  "balance": "Saldo",
+  "capital": "Capital",
+  "interest": "Intereses",
+  "installment": "Cuota",
+  "remaining": "Pendiente",
+  "registerPayment": "Registrar pago",
+  "noInstallments": "Sin cuotas",
+  "noPayments": "Sin pagos",
+  "noPaymentsHint": "Los pagos confirmados aparecerán aquí.",
+  "totalInterestPaidLabel": "Intereses pagados",
+  "totalPrincipalPaidLabel": "Capital amortizado",
+  "extraPrincipalPaid": "Abonos anticipados",
+  "earlyPaymentSimulatorHint": "Simula abonos a capital sin modificar el préstamo hasta confirmar.",
+  "reduceTerm": "Reducir plazo",
+  "reducePayment": "Reducir cuota",
+  "extraPaymentAmount": "Abono extraordinario",
+  "simulate": "Simular",
+  "confirmExtraPayment": "Confirmar abono",
+  "extraPaymentConfirmed": "Abono extraordinario confirmado.",
+  "compareScenarios": "Comparar escenarios",
+  "compareAmountsHint": "Montos separados por coma (ej. 25000,50000,100000)",
+  "compare": "Comparar",
+  "newBalance": "Nuevo saldo",
+  "newInstallment": "Nueva cuota",
+  "paymentReduction": "Reducción de cuota",
+  "periodsSaved": "Cuotas ahorradas",
+  "timeSavedDays": "Días reducidos",
+  "interestWithoutExtra": "Intereses sin abono",
+  "interestWithExtra": "Intereses con abono",
+  "netInterestSaved": "Ahorro neto en intereses",
+  "penalty": "Penalidad",
+  "reminders": "Recordatorios",
+  "sameDay": "El mismo día",
+  "daysBefore": "{days} días antes",
+  "@daysBefore": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindOnOverdue": "Recordar si está vencido",
+  "remindersSaved": "Recordatorios guardados.",
+  "paymentKind": "Tipo de pago",
+  "paymentKindRegular": "Cuota normal",
+  "paymentKindPartial": "Pago parcial",
+  "paymentKindExtra": "Abono a capital",
+  "paymentKindPayoff": "Liquidación total",
+  "paymentKindFee": "Comisión / cargo",
+  "installmentPending": "Pendiente",
+  "installmentDueSoon": "Próxima a vencer",
+  "installmentOverdue": "Vencida",
+  "installmentPaid": "Pagada",
+  "installmentPartial": "Parcialmente pagada",
+  "calculate": "Calcular",
+  "selectedDayPayments": "Pagos del día",
+  "selectCalendarDay": "Selecciona una fecha del calendario.",
+  "noPaymentsOnDay": "No hay pagos en esta fecha.",
+  "upcomingPayments": "Próximos pagos",
+  "noUpcomingPayments": "No hay próximos vencimientos.",
+  "catLoanPayment": "Pago de préstamo",
+  "loanDueTitle": "Vencimiento de préstamo",
+  "loanDueBody": "{name}: cuota {amount}. Faltan {days} día(s).",
+  "@loanDueBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "loanOverdueTitle": "Préstamo vencido",
+  "loanOverdueBody": "{name}: cuota {amount} vencida (día {day}).",
+  "@loanOverdueBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "day": {
+        "type": "String"
+      }
+    }
+  }
 }

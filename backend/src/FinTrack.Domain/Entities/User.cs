@@ -16,5 +16,6 @@ public class User
     public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
     public ICollection<SavingsGoal> SavingsGoals { get; set; } = new List<SavingsGoal>();
     public ICollection<RecurringTransaction> RecurringTransactions { get; set; } = new List<RecurringTransaction>();
+    public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     public ICollection<ExternalLogin> ExternalLogins { get; set; } = new List<ExternalLogin>();
 }

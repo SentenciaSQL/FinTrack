@@ -527,7 +527,7 @@ abstract class AppLocalizations {
   /// No description provided for @currentBalance.
   ///
   /// In es, this message translates to:
-  /// **'Balance actual'**
+  /// **'Saldo pendiente'**
   String get currentBalance;
 
   /// No description provided for @monthlyIncome.
@@ -1771,6 +1771,714 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Demasiados intentos. Espera un momento y vuelve a intentarlo.'**
   String get errTooManyRequests;
+
+  /// No description provided for @loans.
+  ///
+  /// In es, this message translates to:
+  /// **'Préstamos'**
+  String get loans;
+
+  /// No description provided for @loansDashboard.
+  ///
+  /// In es, this message translates to:
+  /// **'Dashboard de préstamos'**
+  String get loansDashboard;
+
+  /// No description provided for @myLoans.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis préstamos'**
+  String get myLoans;
+
+  /// No description provided for @newLoan.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo préstamo'**
+  String get newLoan;
+
+  /// No description provided for @editLoan.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar préstamo'**
+  String get editLoan;
+
+  /// No description provided for @emptyLoans.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin préstamos'**
+  String get emptyLoans;
+
+  /// No description provided for @emptyLoansHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra un préstamo para calcular cuotas, intereses y vencimientos.'**
+  String get emptyLoansHint;
+
+  /// No description provided for @loanCalculator.
+  ///
+  /// In es, this message translates to:
+  /// **'Calculadora de préstamos'**
+  String get loanCalculator;
+
+  /// No description provided for @loanCalendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario de pagos'**
+  String get loanCalendar;
+
+  /// No description provided for @activeLoans.
+  ///
+  /// In es, this message translates to:
+  /// **'Préstamos activos'**
+  String get activeLoans;
+
+  /// No description provided for @totalDebt.
+  ///
+  /// In es, this message translates to:
+  /// **'Deuda total'**
+  String get totalDebt;
+
+  /// No description provided for @monthlyInstallments.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas mensuales'**
+  String get monthlyInstallments;
+
+  /// No description provided for @interestSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahorro en intereses'**
+  String get interestSaved;
+
+  /// No description provided for @debtPaidPercent.
+  ///
+  /// In es, this message translates to:
+  /// **'Deuda pagada: {percent}%'**
+  String debtPaidPercent(String percent);
+
+  /// No description provided for @nextLoanDue.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximo: {name} · {amount} · {date}'**
+  String nextLoanDue(String name, String amount, String date);
+
+  /// No description provided for @debtDistribution.
+  ///
+  /// In es, this message translates to:
+  /// **'Distribución de deuda'**
+  String get debtDistribution;
+
+  /// No description provided for @debtEvolution.
+  ///
+  /// In es, this message translates to:
+  /// **'Evolución del saldo'**
+  String get debtEvolution;
+
+  /// No description provided for @capitalVsInterest.
+  ///
+  /// In es, this message translates to:
+  /// **'Capital vs intereses'**
+  String get capitalVsInterest;
+
+  /// No description provided for @loanName.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre del préstamo'**
+  String get loanName;
+
+  /// No description provided for @creditor.
+  ///
+  /// In es, this message translates to:
+  /// **'Entidad / acreedor'**
+  String get creditor;
+
+  /// No description provided for @loanType.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de préstamo'**
+  String get loanType;
+
+  /// No description provided for @loanTypePersonal.
+  ///
+  /// In es, this message translates to:
+  /// **'Personal'**
+  String get loanTypePersonal;
+
+  /// No description provided for @loanTypeMortgage.
+  ///
+  /// In es, this message translates to:
+  /// **'Hipotecario'**
+  String get loanTypeMortgage;
+
+  /// No description provided for @loanTypeVehicle.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehicular'**
+  String get loanTypeVehicle;
+
+  /// No description provided for @loanTypeCommercial.
+  ///
+  /// In es, this message translates to:
+  /// **'Comercial'**
+  String get loanTypeCommercial;
+
+  /// No description provided for @loanTypeCreditCard.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta de crédito'**
+  String get loanTypeCreditCard;
+
+  /// No description provided for @loanTypeOther.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro'**
+  String get loanTypeOther;
+
+  /// No description provided for @originalPrincipal.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto original'**
+  String get originalPrincipal;
+
+  /// No description provided for @annualInterestRate.
+  ///
+  /// In es, this message translates to:
+  /// **'Tasa anual (%)'**
+  String get annualInterestRate;
+
+  /// No description provided for @termMonths.
+  ///
+  /// In es, this message translates to:
+  /// **'Plazo (meses)'**
+  String get termMonths;
+
+  /// No description provided for @paymentFrequency.
+  ///
+  /// In es, this message translates to:
+  /// **'Frecuencia de pago'**
+  String get paymentFrequency;
+
+  /// No description provided for @amortizationType.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de amortización'**
+  String get amortizationType;
+
+  /// No description provided for @amortizationFrench.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuota fija (francés)'**
+  String get amortizationFrench;
+
+  /// No description provided for @amortizationGerman.
+  ///
+  /// In es, this message translates to:
+  /// **'Capital fijo (alemán)'**
+  String get amortizationGerman;
+
+  /// No description provided for @amortizationCustom.
+  ///
+  /// In es, this message translates to:
+  /// **'Personalizado'**
+  String get amortizationCustom;
+
+  /// No description provided for @customInstallment.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuota personalizada'**
+  String get customInstallment;
+
+  /// No description provided for @associatedAccount.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuenta asociada (etiqueta)'**
+  String get associatedAccount;
+
+  /// No description provided for @additionalFees.
+  ///
+  /// In es, this message translates to:
+  /// **'Comisiones / cargos'**
+  String get additionalFees;
+
+  /// No description provided for @disbursementDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de desembolso'**
+  String get disbursementDate;
+
+  /// No description provided for @firstInstallmentDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de primera cuota'**
+  String get firstInstallmentDate;
+
+  /// No description provided for @existingLoan.
+  ///
+  /// In es, this message translates to:
+  /// **'Préstamo existente'**
+  String get existingLoan;
+
+  /// No description provided for @existingLoanHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Incluye saldo actual y cuotas restantes.'**
+  String get existingLoanHint;
+
+  /// No description provided for @remainingInstallments.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas restantes'**
+  String get remainingInstallments;
+
+  /// No description provided for @nextPaymentDate.
+  ///
+  /// In es, this message translates to:
+  /// **'Próxima fecha de pago'**
+  String get nextPaymentDate;
+
+  /// No description provided for @defaultPaymentCategory.
+  ///
+  /// In es, this message translates to:
+  /// **'Categoría para pagos'**
+  String get defaultPaymentCategory;
+
+  /// No description provided for @earlyPenaltyRate.
+  ///
+  /// In es, this message translates to:
+  /// **'Penalidad anticipada (%)'**
+  String get earlyPenaltyRate;
+
+  /// No description provided for @earlyPenaltyFixed.
+  ///
+  /// In es, this message translates to:
+  /// **'Penalidad anticipada fija'**
+  String get earlyPenaltyFixed;
+
+  /// No description provided for @previewAmortization.
+  ///
+  /// In es, this message translates to:
+  /// **'Vista previa de amortización'**
+  String get previewAmortization;
+
+  /// No description provided for @estimatedInstallment.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuota estimada'**
+  String get estimatedInstallment;
+
+  /// No description provided for @totalInterest.
+  ///
+  /// In es, this message translates to:
+  /// **'Total de intereses'**
+  String get totalInterest;
+
+  /// No description provided for @totalToPay.
+  ///
+  /// In es, this message translates to:
+  /// **'Total a pagar'**
+  String get totalToPay;
+
+  /// No description provided for @estimatedEnd.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha estimada de fin'**
+  String get estimatedEnd;
+
+  /// No description provided for @estimateDisclaimer.
+  ///
+  /// In es, this message translates to:
+  /// **'Resultados estimados: verifica las condiciones reales del acreedor.'**
+  String get estimateDisclaimer;
+
+  /// No description provided for @completeRequiredFields.
+  ///
+  /// In es, this message translates to:
+  /// **'Completa los campos obligatorios.'**
+  String get completeRequiredFields;
+
+  /// No description provided for @summary.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen'**
+  String get summary;
+
+  /// No description provided for @amortizationTable.
+  ///
+  /// In es, this message translates to:
+  /// **'Amortización'**
+  String get amortizationTable;
+
+  /// No description provided for @installments.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas'**
+  String get installments;
+
+  /// No description provided for @paymentHistory.
+  ///
+  /// In es, this message translates to:
+  /// **'Historial de pagos'**
+  String get paymentHistory;
+
+  /// No description provided for @earlyPaymentSimulator.
+  ///
+  /// In es, this message translates to:
+  /// **'Simulador'**
+  String get earlyPaymentSimulator;
+
+  /// No description provided for @configuration.
+  ///
+  /// In es, this message translates to:
+  /// **'Configuración'**
+  String get configuration;
+
+  /// No description provided for @balance.
+  ///
+  /// In es, this message translates to:
+  /// **'Saldo'**
+  String get balance;
+
+  /// No description provided for @capital.
+  ///
+  /// In es, this message translates to:
+  /// **'Capital'**
+  String get capital;
+
+  /// No description provided for @interest.
+  ///
+  /// In es, this message translates to:
+  /// **'Intereses'**
+  String get interest;
+
+  /// No description provided for @installment.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuota'**
+  String get installment;
+
+  /// No description provided for @remaining.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get remaining;
+
+  /// No description provided for @registerPayment.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar pago'**
+  String get registerPayment;
+
+  /// No description provided for @noInstallments.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin cuotas'**
+  String get noInstallments;
+
+  /// No description provided for @noPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin pagos'**
+  String get noPayments;
+
+  /// No description provided for @noPaymentsHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos confirmados aparecerán aquí.'**
+  String get noPaymentsHint;
+
+  /// No description provided for @totalInterestPaidLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Intereses pagados'**
+  String get totalInterestPaidLabel;
+
+  /// No description provided for @totalPrincipalPaidLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Capital amortizado'**
+  String get totalPrincipalPaidLabel;
+
+  /// No description provided for @extraPrincipalPaid.
+  ///
+  /// In es, this message translates to:
+  /// **'Abonos anticipados'**
+  String get extraPrincipalPaid;
+
+  /// No description provided for @earlyPaymentSimulatorHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Simula abonos a capital sin modificar el préstamo hasta confirmar.'**
+  String get earlyPaymentSimulatorHint;
+
+  /// No description provided for @reduceTerm.
+  ///
+  /// In es, this message translates to:
+  /// **'Reducir plazo'**
+  String get reduceTerm;
+
+  /// No description provided for @reducePayment.
+  ///
+  /// In es, this message translates to:
+  /// **'Reducir cuota'**
+  String get reducePayment;
+
+  /// No description provided for @extraPaymentAmount.
+  ///
+  /// In es, this message translates to:
+  /// **'Abono extraordinario'**
+  String get extraPaymentAmount;
+
+  /// No description provided for @simulate.
+  ///
+  /// In es, this message translates to:
+  /// **'Simular'**
+  String get simulate;
+
+  /// No description provided for @confirmExtraPayment.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar abono'**
+  String get confirmExtraPayment;
+
+  /// No description provided for @extraPaymentConfirmed.
+  ///
+  /// In es, this message translates to:
+  /// **'Abono extraordinario confirmado.'**
+  String get extraPaymentConfirmed;
+
+  /// No description provided for @compareScenarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar escenarios'**
+  String get compareScenarios;
+
+  /// No description provided for @compareAmountsHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Montos separados por coma (ej. 25000,50000,100000)'**
+  String get compareAmountsHint;
+
+  /// No description provided for @compare.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar'**
+  String get compare;
+
+  /// No description provided for @newBalance.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo saldo'**
+  String get newBalance;
+
+  /// No description provided for @newInstallment.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva cuota'**
+  String get newInstallment;
+
+  /// No description provided for @paymentReduction.
+  ///
+  /// In es, this message translates to:
+  /// **'Reducción de cuota'**
+  String get paymentReduction;
+
+  /// No description provided for @periodsSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuotas ahorradas'**
+  String get periodsSaved;
+
+  /// No description provided for @timeSavedDays.
+  ///
+  /// In es, this message translates to:
+  /// **'Días reducidos'**
+  String get timeSavedDays;
+
+  /// No description provided for @interestWithoutExtra.
+  ///
+  /// In es, this message translates to:
+  /// **'Intereses sin abono'**
+  String get interestWithoutExtra;
+
+  /// No description provided for @interestWithExtra.
+  ///
+  /// In es, this message translates to:
+  /// **'Intereses con abono'**
+  String get interestWithExtra;
+
+  /// No description provided for @netInterestSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahorro neto en intereses'**
+  String get netInterestSaved;
+
+  /// No description provided for @penalty.
+  ///
+  /// In es, this message translates to:
+  /// **'Penalidad'**
+  String get penalty;
+
+  /// No description provided for @reminders.
+  ///
+  /// In es, this message translates to:
+  /// **'Recordatorios'**
+  String get reminders;
+
+  /// No description provided for @sameDay.
+  ///
+  /// In es, this message translates to:
+  /// **'El mismo día'**
+  String get sameDay;
+
+  /// No description provided for @daysBefore.
+  ///
+  /// In es, this message translates to:
+  /// **'{days} días antes'**
+  String daysBefore(int days);
+
+  /// No description provided for @remindOnOverdue.
+  ///
+  /// In es, this message translates to:
+  /// **'Recordar si está vencido'**
+  String get remindOnOverdue;
+
+  /// No description provided for @remindersSaved.
+  ///
+  /// In es, this message translates to:
+  /// **'Recordatorios guardados.'**
+  String get remindersSaved;
+
+  /// No description provided for @paymentKind.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de pago'**
+  String get paymentKind;
+
+  /// No description provided for @paymentKindRegular.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuota normal'**
+  String get paymentKindRegular;
+
+  /// No description provided for @paymentKindPartial.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago parcial'**
+  String get paymentKindPartial;
+
+  /// No description provided for @paymentKindExtra.
+  ///
+  /// In es, this message translates to:
+  /// **'Abono a capital'**
+  String get paymentKindExtra;
+
+  /// No description provided for @paymentKindPayoff.
+  ///
+  /// In es, this message translates to:
+  /// **'Liquidación total'**
+  String get paymentKindPayoff;
+
+  /// No description provided for @paymentKindFee.
+  ///
+  /// In es, this message translates to:
+  /// **'Comisión / cargo'**
+  String get paymentKindFee;
+
+  /// No description provided for @installmentPending.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get installmentPending;
+
+  /// No description provided for @installmentDueSoon.
+  ///
+  /// In es, this message translates to:
+  /// **'Próxima a vencer'**
+  String get installmentDueSoon;
+
+  /// No description provided for @installmentOverdue.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get installmentOverdue;
+
+  /// No description provided for @installmentPaid.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagada'**
+  String get installmentPaid;
+
+  /// No description provided for @installmentPartial.
+  ///
+  /// In es, this message translates to:
+  /// **'Parcialmente pagada'**
+  String get installmentPartial;
+
+  /// No description provided for @calculate.
+  ///
+  /// In es, this message translates to:
+  /// **'Calcular'**
+  String get calculate;
+
+  /// No description provided for @selectedDayPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagos del día'**
+  String get selectedDayPayments;
+
+  /// No description provided for @selectCalendarDay.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una fecha del calendario.'**
+  String get selectCalendarDay;
+
+  /// No description provided for @noPaymentsOnDay.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay pagos en esta fecha.'**
+  String get noPaymentsOnDay;
+
+  /// No description provided for @upcomingPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximos pagos'**
+  String get upcomingPayments;
+
+  /// No description provided for @noUpcomingPayments.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay próximos vencimientos.'**
+  String get noUpcomingPayments;
+
+  /// No description provided for @catLoanPayment.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago de préstamo'**
+  String get catLoanPayment;
+
+  /// No description provided for @loanDueTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimiento de préstamo'**
+  String get loanDueTitle;
+
+  /// No description provided for @loanDueBody.
+  ///
+  /// In es, this message translates to:
+  /// **'{name}: cuota {amount}. Faltan {days} día(s).'**
+  String loanDueBody(String name, String amount, int days);
+
+  /// No description provided for @loanOverdueTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Préstamo vencido'**
+  String get loanOverdueTitle;
+
+  /// No description provided for @loanOverdueBody.
+  ///
+  /// In es, this message translates to:
+  /// **'{name}: cuota {amount} vencida (día {day}).'**
+  String loanOverdueBody(String name, String amount, String day);
 }
 
 class _AppLocalizationsDelegate

@@ -16,6 +16,10 @@ import 'package:fintrack/features/budgets/presentation/budgets_screen.dart';
 import 'package:fintrack/features/dashboard/presentation/app_shell.dart';
 import 'package:fintrack/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:fintrack/features/reports/presentation/reports_screen.dart';
+import 'package:fintrack/features/loans/presentation/loan_calendar_screen.dart';
+import 'package:fintrack/features/loans/presentation/loan_calculator_screen.dart';
+import 'package:fintrack/features/loans/presentation/loan_detail_screen.dart';
+import 'package:fintrack/features/loans/presentation/loans_screens.dart';
 import 'package:fintrack/features/settings/presentation/more_screens.dart';
 import 'package:fintrack/features/transactions/presentation/transactions_screens.dart';
 
@@ -110,6 +114,30 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/recurring',
         builder: (context, state) => const RecurringScreen(),
+      ),
+      GoRoute(
+        path: '/loans',
+        builder: (context, state) => const LoansScreen(),
+      ),
+      GoRoute(
+        path: '/loans/new',
+        builder: (context, state) => const LoanFormScreen(),
+      ),
+      GoRoute(
+        path: '/loans/calculator',
+        builder: (context, state) => const LoanCalculatorScreen(),
+      ),
+      GoRoute(
+        path: '/loans/calendar',
+        builder: (context, state) => const LoanCalendarScreen(),
+      ),
+      GoRoute(
+        path: '/loans/:id',
+        builder: (context, state) => LoanDetailScreen(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/loans/:id/edit',
+        builder: (context, state) => LoanFormScreen(id: state.pathParameters['id']!),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

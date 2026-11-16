@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -224,7 +225,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forgotPassword => '¿Olvidaste tu contraseña?';
 
   @override
-  String get currentBalance => 'Balance actual';
+  String get currentBalance => 'Saldo pendiente';
 
   @override
   String get monthlyIncome => 'Ingresos del mes';
@@ -900,4 +901,372 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errTooManyRequests =>
       'Demasiados intentos. Espera un momento y vuelve a intentarlo.';
+
+  @override
+  String get loans => 'Préstamos';
+
+  @override
+  String get loansDashboard => 'Dashboard de préstamos';
+
+  @override
+  String get myLoans => 'Mis préstamos';
+
+  @override
+  String get newLoan => 'Nuevo préstamo';
+
+  @override
+  String get editLoan => 'Editar préstamo';
+
+  @override
+  String get emptyLoans => 'Sin préstamos';
+
+  @override
+  String get emptyLoansHint =>
+      'Registra un préstamo para calcular cuotas, intereses y vencimientos.';
+
+  @override
+  String get loanCalculator => 'Calculadora de préstamos';
+
+  @override
+  String get loanCalendar => 'Calendario de pagos';
+
+  @override
+  String get activeLoans => 'Préstamos activos';
+
+  @override
+  String get totalDebt => 'Deuda total';
+
+  @override
+  String get monthlyInstallments => 'Cuotas mensuales';
+
+  @override
+  String get interestSaved => 'Ahorro en intereses';
+
+  @override
+  String debtPaidPercent(String percent) {
+    return 'Deuda pagada: $percent%';
+  }
+
+  @override
+  String nextLoanDue(String name, String amount, String date) {
+    return 'Próximo: $name · $amount · $date';
+  }
+
+  @override
+  String get debtDistribution => 'Distribución de deuda';
+
+  @override
+  String get debtEvolution => 'Evolución del saldo';
+
+  @override
+  String get capitalVsInterest => 'Capital vs intereses';
+
+  @override
+  String get loanName => 'Nombre del préstamo';
+
+  @override
+  String get creditor => 'Entidad / acreedor';
+
+  @override
+  String get loanType => 'Tipo de préstamo';
+
+  @override
+  String get loanTypePersonal => 'Personal';
+
+  @override
+  String get loanTypeMortgage => 'Hipotecario';
+
+  @override
+  String get loanTypeVehicle => 'Vehicular';
+
+  @override
+  String get loanTypeCommercial => 'Comercial';
+
+  @override
+  String get loanTypeCreditCard => 'Tarjeta de crédito';
+
+  @override
+  String get loanTypeOther => 'Otro';
+
+  @override
+  String get originalPrincipal => 'Monto original';
+
+  @override
+  String get annualInterestRate => 'Tasa anual (%)';
+
+  @override
+  String get termMonths => 'Plazo (meses)';
+
+  @override
+  String get paymentFrequency => 'Frecuencia de pago';
+
+  @override
+  String get amortizationType => 'Tipo de amortización';
+
+  @override
+  String get amortizationFrench => 'Cuota fija (francés)';
+
+  @override
+  String get amortizationGerman => 'Capital fijo (alemán)';
+
+  @override
+  String get amortizationCustom => 'Personalizado';
+
+  @override
+  String get customInstallment => 'Cuota personalizada';
+
+  @override
+  String get associatedAccount => 'Cuenta asociada (etiqueta)';
+
+  @override
+  String get additionalFees => 'Comisiones / cargos';
+
+  @override
+  String get disbursementDate => 'Fecha de desembolso';
+
+  @override
+  String get firstInstallmentDate => 'Fecha de primera cuota';
+
+  @override
+  String get existingLoan => 'Préstamo existente';
+
+  @override
+  String get existingLoanHint => 'Incluye saldo actual y cuotas restantes.';
+
+  @override
+  String get remainingInstallments => 'Cuotas restantes';
+
+  @override
+  String get nextPaymentDate => 'Próxima fecha de pago';
+
+  @override
+  String get defaultPaymentCategory => 'Categoría para pagos';
+
+  @override
+  String get earlyPenaltyRate => 'Penalidad anticipada (%)';
+
+  @override
+  String get earlyPenaltyFixed => 'Penalidad anticipada fija';
+
+  @override
+  String get previewAmortization => 'Vista previa de amortización';
+
+  @override
+  String get estimatedInstallment => 'Cuota estimada';
+
+  @override
+  String get totalInterest => 'Total de intereses';
+
+  @override
+  String get totalToPay => 'Total a pagar';
+
+  @override
+  String get estimatedEnd => 'Fecha estimada de fin';
+
+  @override
+  String get estimateDisclaimer =>
+      'Resultados estimados: verifica las condiciones reales del acreedor.';
+
+  @override
+  String get completeRequiredFields => 'Completa los campos obligatorios.';
+
+  @override
+  String get summary => 'Resumen';
+
+  @override
+  String get amortizationTable => 'Amortización';
+
+  @override
+  String get installments => 'Cuotas';
+
+  @override
+  String get paymentHistory => 'Historial de pagos';
+
+  @override
+  String get earlyPaymentSimulator => 'Simulador';
+
+  @override
+  String get configuration => 'Configuración';
+
+  @override
+  String get balance => 'Saldo';
+
+  @override
+  String get capital => 'Capital';
+
+  @override
+  String get interest => 'Intereses';
+
+  @override
+  String get installment => 'Cuota';
+
+  @override
+  String get remaining => 'Pendiente';
+
+  @override
+  String get registerPayment => 'Registrar pago';
+
+  @override
+  String get noInstallments => 'Sin cuotas';
+
+  @override
+  String get noPayments => 'Sin pagos';
+
+  @override
+  String get noPaymentsHint => 'Los pagos confirmados aparecerán aquí.';
+
+  @override
+  String get totalInterestPaidLabel => 'Intereses pagados';
+
+  @override
+  String get totalPrincipalPaidLabel => 'Capital amortizado';
+
+  @override
+  String get extraPrincipalPaid => 'Abonos anticipados';
+
+  @override
+  String get earlyPaymentSimulatorHint =>
+      'Simula abonos a capital sin modificar el préstamo hasta confirmar.';
+
+  @override
+  String get reduceTerm => 'Reducir plazo';
+
+  @override
+  String get reducePayment => 'Reducir cuota';
+
+  @override
+  String get extraPaymentAmount => 'Abono extraordinario';
+
+  @override
+  String get simulate => 'Simular';
+
+  @override
+  String get confirmExtraPayment => 'Confirmar abono';
+
+  @override
+  String get extraPaymentConfirmed => 'Abono extraordinario confirmado.';
+
+  @override
+  String get compareScenarios => 'Comparar escenarios';
+
+  @override
+  String get compareAmountsHint =>
+      'Montos separados por coma (ej. 25000,50000,100000)';
+
+  @override
+  String get compare => 'Comparar';
+
+  @override
+  String get newBalance => 'Nuevo saldo';
+
+  @override
+  String get newInstallment => 'Nueva cuota';
+
+  @override
+  String get paymentReduction => 'Reducción de cuota';
+
+  @override
+  String get periodsSaved => 'Cuotas ahorradas';
+
+  @override
+  String get timeSavedDays => 'Días reducidos';
+
+  @override
+  String get interestWithoutExtra => 'Intereses sin abono';
+
+  @override
+  String get interestWithExtra => 'Intereses con abono';
+
+  @override
+  String get netInterestSaved => 'Ahorro neto en intereses';
+
+  @override
+  String get penalty => 'Penalidad';
+
+  @override
+  String get reminders => 'Recordatorios';
+
+  @override
+  String get sameDay => 'El mismo día';
+
+  @override
+  String daysBefore(int days) {
+    return '$days días antes';
+  }
+
+  @override
+  String get remindOnOverdue => 'Recordar si está vencido';
+
+  @override
+  String get remindersSaved => 'Recordatorios guardados.';
+
+  @override
+  String get paymentKind => 'Tipo de pago';
+
+  @override
+  String get paymentKindRegular => 'Cuota normal';
+
+  @override
+  String get paymentKindPartial => 'Pago parcial';
+
+  @override
+  String get paymentKindExtra => 'Abono a capital';
+
+  @override
+  String get paymentKindPayoff => 'Liquidación total';
+
+  @override
+  String get paymentKindFee => 'Comisión / cargo';
+
+  @override
+  String get installmentPending => 'Pendiente';
+
+  @override
+  String get installmentDueSoon => 'Próxima a vencer';
+
+  @override
+  String get installmentOverdue => 'Vencida';
+
+  @override
+  String get installmentPaid => 'Pagada';
+
+  @override
+  String get installmentPartial => 'Parcialmente pagada';
+
+  @override
+  String get calculate => 'Calcular';
+
+  @override
+  String get selectedDayPayments => 'Pagos del día';
+
+  @override
+  String get selectCalendarDay => 'Selecciona una fecha del calendario.';
+
+  @override
+  String get noPaymentsOnDay => 'No hay pagos en esta fecha.';
+
+  @override
+  String get upcomingPayments => 'Próximos pagos';
+
+  @override
+  String get noUpcomingPayments => 'No hay próximos vencimientos.';
+
+  @override
+  String get catLoanPayment => 'Pago de préstamo';
+
+  @override
+  String get loanDueTitle => 'Vencimiento de préstamo';
+
+  @override
+  String loanDueBody(String name, String amount, int days) {
+    return '$name: cuota $amount. Faltan $days día(s).';
+  }
+
+  @override
+  String get loanOverdueTitle => 'Préstamo vencido';
+
+  @override
+  String loanOverdueBody(String name, String amount, String day) {
+    return '$name: cuota $amount vencida (día $day).';
+  }
 }

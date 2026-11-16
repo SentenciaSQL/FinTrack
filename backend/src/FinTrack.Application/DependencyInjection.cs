@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IBudgetService, BudgetService>();
         services.AddScoped<ISavingsGoalService, SavingsGoalService>();
         services.AddScoped<IRecurringTransactionService, RecurringTransactionService>();
+        services.AddScoped<ILoanService, LoanService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IDemoDataService, DemoDataService>();

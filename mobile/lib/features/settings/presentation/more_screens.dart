@@ -30,6 +30,7 @@ class MoreScreen extends ConsumerWidget {
           _tile(context, Icons.person_outline, l10n.profile, () => context.push('/profile')),
           _tile(context, Icons.category_outlined, l10n.categories, () => context.push('/categories')),
           _tile(context, Icons.flag_outlined, l10n.savingsGoals, () => context.push('/savings')),
+          _tile(context, Icons.account_balance_outlined, l10n.loans, () => context.push('/loans')),
           _tile(context, Icons.autorenew, l10n.recurring, () => context.push('/recurring')),
           _tile(context, Icons.settings_outlined, l10n.settings, () => context.push('/settings')),
         ],

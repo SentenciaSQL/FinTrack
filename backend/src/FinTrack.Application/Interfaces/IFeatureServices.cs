@@ -2,6 +2,7 @@ using FinTrack.Application.Common;
 using FinTrack.Application.DTOs.Budgets;
 using FinTrack.Application.DTOs.Categories;
 using FinTrack.Application.DTOs.Dashboard;
+using FinTrack.Application.DTOs.Loans;
 using FinTrack.Application.DTOs.Recurring;
 using FinTrack.Application.DTOs.Reports;
 using FinTrack.Application.DTOs.Savings;
@@ -68,4 +69,23 @@ public interface IReportService
 public interface IDemoDataService
 {
     Task SeedAsync(CancellationToken cancellationToken = default);
+}
+
+public interface ILoanService
+{
+    Task<IReadOnlyList<LoanDto>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<LoanDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<LoanDto> CreateAsync(CreateLoanRequest request, CancellationToken cancellationToken = default);
+    Task<LoanDto> UpdateAsync(Guid id, UpdateLoanRequest request, CancellationToken cancellationToken = default);
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<AmortizationScheduleDto> CalculateAsync(CalculateLoanRequest request, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<LoanInstallmentDto>> GetInstallmentsAsync(Guid loanId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<LoanPaymentDto>> GetPaymentsAsync(Guid loanId, CancellationToken cancellationToken = default);
+    Task<LoanPaymentDto> RecordPaymentAsync(Guid loanId, RecordLoanPaymentRequest request, CancellationToken cancellationToken = default);
+    Task<EarlyPaymentScenarioDto> SimulateEarlyPaymentAsync(Guid loanId, SimulateEarlyPaymentRequest request, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<EarlyPaymentScenarioDto>> CompareEarlyPaymentsAsync(Guid loanId, CompareEarlyPaymentsRequest request, CancellationToken cancellationToken = default);
+    Task<LoanDashboardDto> GetDashboardAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<LoanCalendarItemDto>> GetCalendarAsync(DateTime? from, DateTime? to, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<LoanChangeLogDto>> GetChangeLogsAsync(Guid loanId, CancellationToken cancellationToken = default);
+    Task<LoanDto> UpdateRemindersAsync(Guid loanId, UpdateLoanRemindersRequest request, CancellationToken cancellationToken = default);
 }

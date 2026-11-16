@@ -16,6 +16,7 @@ public static class DefaultCategories
         ("SHOPPING", TransactionType.EXPENSE, "shopping_bag"),
         ("SUBSCRIPTIONS", TransactionType.EXPENSE, "subscriptions"),
         ("TRAVEL", TransactionType.EXPENSE, "flight"),
+        ("LOAN_PAYMENT", TransactionType.EXPENSE, "account_balance"),
         ("OTHER", TransactionType.EXPENSE, "more_horiz"),
         ("SALARY", TransactionType.INCOME, "payments"),
         ("FREELANCE", TransactionType.INCOME, "laptop"),
